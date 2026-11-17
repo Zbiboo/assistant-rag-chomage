@@ -12,8 +12,8 @@ Ce guide explique, étape par étape, comment est construit l'assistant qui rép
 | 3. Répondre | Claude reformule la question, puis répond à partir des morceaux en citant ses sources | Terminé |
 | 4. Publier le code | Dépôt Git sécurisé (clé jamais versionnée), puis GitHub | Terminé |
 | 5. Réduire les coûts | Modèles moins chers configurables, limites de taille, coût affiché | Terminé |
-| 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | Prochaine étape |
-| 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | À faire |
+| 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | Terminé |
+| 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | Prochaine étape |
 | 8. Mettre en ligne | Hébergement sur Hugging Face Spaces, testable par un lien | À faire |
 | 9. Présenter | README du dépôt, texte de présentation | À faire |
 
@@ -165,6 +165,34 @@ MODELE_REPONSE=claude-sonnet-5-5 .venv/bin/python scripts/demander.py "ma questi
 `demander.py` contient d'un côté le **moteur** (la classe `Assistant`, qui renvoie la réponse, les extraits et les coûts sans rien afficher), de l'autre l'**affichage** en ligne de commande. L'évaluation et la page web réutilisent le même moteur : le code n'est écrit qu'une fois.
 
 → Voir : classe `Assistant` dans [scripts/demander.py](scripts/demander.py)
+
+## Étape 6 : évaluer
+
+### Pourquoi évaluer
+Sans mesure, on ne sait pas si une modification améliore ou dégrade l'assistant. Un **jeu d'évaluation** est une liste de questions dont on connaît la bonne réponse. On le relance après chaque changement, comme un examen blanc.
+
+→ Voir : [eval/questions.json](eval/questions.json), [eval/run_eval.py](eval/run_eval.py), [eval/resultats.md](eval/resultats.md)
+
+### Ce qu'on mesure
+- **La recherche** : les informations utiles sont-elles dans les 5 extraits donnés au modèle ? Sans elles, même le meilleur modèle ne peut pas bien répondre.
+- **La réponse** : contient-elle les éléments clés attendus (« 685 jours », « 15 jours »…) ?
+- **Les citations** : chaque [n] renvoie-t-il à un extrait réellement fourni ? Une citation inventée serait grave.
+- **L'honnêteté** : aux questions hors sujet (retraite, APL), répond-il « je ne sais pas » ?
+
+### Critère indulgent ou strict
+« La bonne fiche est parmi les extraits » donnait 100 % : trop indulgent, car la fiche peut être là sans le bon passage. Le critère strict, « les éléments clés sont dans le texte des extraits », a montré le vrai effet de la reformulation : de 64 % à 90 %.
+
+### Faux négatifs : lire les réponses
+Un contrôle automatique « mot pour mot » se trompe : « tribunal administratif » au lieu de « juge administratif » était compté comme une erreur alors que c'est juste. Il faut lire les réponses en échec avant de conclure, puis corriger le contrôle. L'option `--recalculer` refait la notation sans repayer les appels à l'API.
+
+### Non-déterminisme
+Le modèle ne répond pas exactement pareil à chaque fois : la reformulation, donc les extraits, peuvent varier d'une exécution à l'autre. Il faut regarder les tendances, pas un point isolé.
+
+### Le résultat : Haiku suffit
+Haiku et Sonnet obtiennent la même qualité sur ce jeu de questions, mais Haiku coûte 13 fois moins cher (≈ 0,0009 $ contre 0,012 $ par question). Les erreurs restantes viennent de la recherche, pas du modèle : un modèle plus cher n'y changerait rien.
+
+### Les doublons
+63 % des morceaux ont un texte identique à un autre, car les fiches répètent le même texte pour chaque tranche d'âge et pour le privé comme le public. Ils occupent plusieurs des 5 places d'extraits. Correction simple à faire : dédoublonner les résultats. Les embeddings ne sont pas justifiés à ce stade.
 
 ## Outils et environnement
 

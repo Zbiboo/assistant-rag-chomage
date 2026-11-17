@@ -1,0 +1,1346 @@
+[
+  {
+    "id": "q01",
+    "question": "Combien de temps faut-il avoir travaillé pour avoir droit au chômage ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "01-conditions-are.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Il faut avoir travaillé **au moins 6 mois**, soit **130 jours ou 910 heures**, sur une période de référence qui dépend de votre âge [1].\n\n**Période de référence selon l'âge (agents publics) :**\n- 55 ans ou plus : ces 6 mois doivent avoir été effectués dans les **36 derniers mois** avant la fin du contrat [1][2].\n- Moins de 55 ans : ces 6 mois doivent avoir été effectués dans les **24 derniers mois** avant la fin du contrat [3].\n\n**Salariés du secteur privé :**\n- 55 ans ou plus : mêmes règles, soit 6 mois dans les **36 derniers mois** [4][5].\n- Pour les moins de 55 ans, les extraits ne donnent pas la règle. Consultez France Travail.\n\n**Depuis le 1er avril 2026, pour les primo-entrants :** la condition peut être réduite à **5 mois** au lieu de 6, dans les 36 derniers mois (ou dans les 24 derniers mois pour les moins de 55 ans). Cela concerne les demandeurs d'emploi qui n'ont jamais bénéficié de l'assurance chômage, ou qui n'en ont pas bénéficié depuis plus de 20 ans [1][2][3][4][5].\n\nLes extraits ne précisent pas tous les cas. Pour votre situation exacte, renseignez-vous auprès de France Travail.",
+        "secondes": 5.1,
+        "cout": 0.0008181,
+        "tokens_entree": 2696,
+        "tokens_sortie": 1097,
+        "elements_trouves": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Il faut avoir travaillé au moins 6 mois (soit 130 jours ou 910 heures) pour avoir droit à l'allocation chômage (ARE). Cette durée s'appelle la « durée d'affiliation ». La période pendant laquelle ce travail est compté dépend de votre âge à la date de fin de contrat. Les extraits concernent les fins de contrat à compter du 1er avril 2025.\n\n**Si vous avez moins de 55 ans** : ces 6 mois doivent se situer dans les 24 derniers mois avant la fin de votre contrat. Cela vaut pour un agent public [3]. Pour un salarié du secteur privé, les extraits fournis ne couvrent pas cette tranche d'âge.\n\n**Si vous avez 55 ans ou plus** (55-56 ans, ou 57 ans et plus) : ces 6 mois doivent se situer dans les 36 derniers mois, que vous soyez salarié du privé [4][5] ou agent public [1][2].\n\n**Cas particulier à partir du 1er avril 2026** : pour les demandeurs d'emploi « primo-entrants » inscrits à France Travail, la durée peut être réduite à 5 mois. Cela concerne ceux qui n'ont jamais touché l'assurance chômage, ou pas depuis plus de 20 ans. La période de référence reste de 24 mois (moins de 55 ans) [3] ou de 36 mois (55 ans et plus) [1][2][4][5].\n\nPour confirmer votre situation précise, notamment si vous êtes salarié du privé et avez moins de 55 ans, vérifiez auprès de France Travail.",
+        "secondes": 4.9,
+        "cout": 0.011032,
+        "tokens_entree": 2696,
+        "tokens_sortie": 564,
+        "elements_trouves": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          1,
+          2,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "durée d'affiliation, conditions d'ouverture de droits à l'ARE, durée minimale d'affiliation, période de référence, travail salarié, ouverture de droits, allocation d'aide au retour à l'emploi",
+    "cout_reformulation": 7.47e-05,
+    "fichiers_sans": [
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "01-conditions-are.md",
+      "01-conditions-are.md"
+    ],
+    "fichiers_avec": [
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "01-conditions-are.md",
+      "01-conditions-are.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q02",
+    "question": "Comment est calculé le montant de mon allocation chômage ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "02-montant-are.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Les extraits fournis ne permettent pas de répondre à votre question. Ils concernent seulement ce qui se passe quand on **reprend une activité** pendant qu'on perçoit l'ARE, et ne décrivent pas comment le montant initial de l'allocation est calculé.\n\nIls donnent tout de même quelques éléments :\n\n- Le **salaire journalier de référence (SJR)** sert de base au calcul de l'ARE. Il est déterminé à partir des rémunérations correspondant à l'emploi perdu [1]. Les extraits ne disent pas comment ce SJR est calculé.\n- Pour une reprise d'activité, le montant versé se calcule avec une formule, mais elle ne concerne que la période de cumul avec un salaire, pas le montant de base [1].\n\nVotre réponse dépend aussi de votre situation. Les extraits distinguent trois tranches d'âge (moins de 55 ans, 55-56 ans, 57 ans ou plus) et deux cas, salarié du secteur privé et agent public [1][2][3][4][5]. Ces distinctions concernent surtout la reprise d'activité, et je ne peux pas dire si elles modifient le calcul du montant de base.\n\nPour obtenir le détail du calcul, consultez la fiche officielle complète sur service-public.fr concernant le montant de l'ARE, ou contactez France Travail, qui pourra calculer votre allocation à partir de votre situation.",
+        "secondes": 4.7,
+        "cout": 0.000795,
+        "tokens_entree": 3720,
+        "tokens_sortie": 846,
+        "elements_trouves": [
+          false,
+          false,
+          true,
+          false,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Les extraits fournis ne permettent de répondre qu'en partie : ils expliquent comment l'allocation (ARE) est calculée **quand vous reprenez une activité salariée**, mais pas comment son montant de départ est déterminé (calcul du salaire journalier de référence, taux, durée, etc.). Pour cela, je vous conseille de vérifier auprès de France Travail.\n\n**Si vous reprenez un emploi tout en cherchant du travail**, votre ARE est versée partiellement. Le montant versé correspond à l'ARE journalière multipliée par le nombre de jours indemnisables du mois [1][2][3][4][5].\n\nCe nombre de jours se calcule ainsi : (ARE mensuelle − 70 % du salaire de votre nouvelle activité) ÷ ARE journalière. Le résultat est arrondi à l'entier le plus proche [1][2][3][4][5].\n\nQuelques précisions :\n- Le total de l'ARE versée et de votre revenu d'activité ne doit pas dépasser votre salaire journalier de référence (SJR) [1][2][3][4][5].\n- Les jours non indemnisés reculent d'autant la fin de votre indemnisation [1][2][3][4][5].\n- Vous devez déclarer votre reprise d'activité lors de l'actualisation mensuelle. Sans justificatif de revenus, France Travail verse une avance calculée provisoirement, puis régularise le mois suivant la remise du justificatif [1][2][3][4][5].\n- Si vous perdez un de vos emplois (cas de plusieurs emplois), l'ARE calculée se cumule intégralement avec les revenus des emplois conservés. Le SJR est alors fondé sur les rémunérations de l'emploi perdu [1][2][3][4][5].\n\nCes règles sont identiques pour les salariés du secteur privé [1][2][3] et pour les agents publics [4][5], quel que soit votre âge dans les extraits fournis (moins de 55 ans [3], 55-56 ans [2][5], 57 ans et plus [1][4]). Elles concernent les fins de contrat à compter du 1er avril 2025.\n\nSi vous voulez savoir comment le montant initial de votre allocation est calculé, précisez votre situation et rapprochez-vous de France Travail.",
+        "secondes": 5.4,
+        "cout": 0.01535,
+        "tokens_entree": 3720,
+        "tokens_sortie": 791,
+        "elements_trouves": [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          2,
+          3,
+          4,
+          5,
+          3,
+          2,
+          5,
+          1,
+          4
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      }
+    },
+    "mots_cles": "allocation d'aide au retour à l'emploi (ARE), montant de l'ARE, salaire journalier de référence (SJR), calcul de l'allocation, allocation journalière, salaire de référence, période de référence, rémunération brute, indemnités chômage, formule de calcul, montant minimum, montant maximum, degressivité, France Travail",
+    "cout_reformulation": 9.430000000000002e-05,
+    "fichiers_sans": [
+      "06-rupture-conventionnelle.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "02-montant-are.md"
+    ],
+    "fichiers_avec": [
+      "09-cumul-reprise-emploi.md",
+      "09-cumul-reprise-emploi.md",
+      "09-cumul-reprise-emploi.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    "infos_avec": [
+      false,
+      false,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q03",
+    "question": "J'ai 56 ans et mon contrat s'est terminé en mai 2025. Combien de temps serai-je indemnisé ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "03-duree-indemnisation.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Si votre contrat s'est terminé en mai 2025, la règle qui s'applique est celle des fiches pour une fin de contrat à compter du 1er avril 2025. Pour un salarié du secteur privé comme pour un agent public, les extraits indiquent que, la situation du marché du travail étant celle décrite, votre durée d'indemnisation maximale est de **685 jours calendaires**, soit une réduction de 25 % [1][2].\n\nCette réduction s'applique parce que le taux de chômage global est inférieur à 9,0 % et n'a pas augmenté de 0,8 point sur un trimestre. Si cette situation change, la durée peut être modifiée, et France Travail doit vous informer d'un éventuel retour à la durée initiale [1][2].\n\nSelon votre situation, vous pourriez aussi bénéficier de :\n- **Un complément de fin de droits (CFD)** d'une durée maximale de 182 jours [1][2].\n- **Un allongement de la durée si vous suivez une formation indemnisée** : jusqu'à 137 jours supplémentaires, soit 822 jours au total. Cela suppose d'avoir travaillé au moins 652 jours [1][2].\n- **Un complément de fin de formation (CFF)**, mais seulement si votre durée a été calculée selon les règles en vigueur au 1er février 2023, et sous conditions, notamment une formation qualifiante de 6 mois ou plus inscrite dans votre contrat d'engagement [1][2]. Ce cas ne semble pas correspondre à une fin de contrat en mai 2025, mais les extraits ne permettent pas de trancher avec certitude.\n\nLes extraits ne permettent pas de calculer votre durée exacte : ils ne disent pas comment les 685 jours se traduisent en mois ni tiennent compte de votre nombre de jours travaillés. Pour connaître précisément vos droits, notamment si vous suivez une formation ou si vous pouvez bénéficier du CFD, contactez France Travail.",
+        "secondes": 6.1,
+        "cout": 0.0009607999999999999,
+        "tokens_entree": 3038,
+        "tokens_sortie": 1314,
+        "elements_trouves": [
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Pour une personne de 56 ans dont le contrat a pris fin en mai 2025, les extraits indiquent une durée maximale de versement de **685 jours calendaires** à l'ouverture des droits. Cela vient d'une réduction de 25 % de la durée d'indemnisation, appliquée parce que le taux de chômage global est inférieur à 9,0 % et n'a pas progressé de 0,8 % sur 1 trimestre [1][2]. France Travail vous informe si cette réduction change, ou si vos droits reviennent à la durée initiale [1][2].\n\nPlusieurs possibilités peuvent allonger cette durée, selon votre situation :\n- **Complément de fin de droits (CFD)** : d'une durée maximale de 182 jours [1][2].\n- **Complément de fin de formation (CFF)** : possible si votre durée a été calculée selon les règles applicables au 1er février 2023 et si vous suivez une formation qualifiante de 6 mois ou plus, inscrite à votre contrat d'engagement [1][2].\n- **Formation indemnisée en Aref** pendant votre indemnisation : la durée peut être allongée jusqu'à 137 jours (822 jours au total), à condition d'avoir travaillé au moins 652 jours [1][2].\n- **Conjoncture défavorable** : cette durée est alors portée à 1050 jours [1][2].\n\nLes extraits sont identiques pour le secteur privé [2] et pour les agents publics [1], donc la réponse est la même dans les deux cas. Ils ne précisent pas votre durée exacte si votre situation est particulière, ni si vous remplissez les conditions des compléments. Pour un calcul personnalisé, vérifiez auprès de France Travail.",
+        "secondes": 4.1,
+        "cout": 0.012036,
+        "tokens_entree": 3038,
+        "tokens_sortie": 596,
+        "elements_trouves": [
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "âge 56 ans, fin de contrat mai 2025, durée d'indemnisation, durée de versement de l'ARE, allocation d'aide au retour à l'emploi, fin de CDD, fin de contrat de travail, âge de 55 ans et plus, durée maximale d'indemnisation, droits au chômage, France Travail",
+    "cout_reformulation": 9.47e-05,
+    "fichiers_sans": [
+      "10-actualisation-obligations.md",
+      "13-radiation-france-travail.md",
+      "04-inscription-france-travail.md",
+      "09-cumul-reprise-emploi.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "fichiers_avec": [
+      "08-chomage-agents-publics.md",
+      "03-duree-indemnisation.md",
+      "09-cumul-reprise-emploi.md",
+      "08-chomage-agents-publics.md",
+      "03-duree-indemnisation.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      false
+    ],
+    "infos_avec": [
+      true
+    ]
+  },
+  {
+    "id": "q04",
+    "question": "Je viens de perdre mon emploi : comment et dans quel délai dois-je m'inscrire à France Travail ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "04-inscription-france-travail.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "**Quand s'inscrire ?** Vous pouvez vous inscrire dès le lendemain de votre dernier jour de travail [1][3]. Si vous êtes en préavis, l'inscription est possible dès la fin de celui-ci [3].\n\n**Dans quel délai ?** Vous devez vous inscrire au plus tard dans les 12 mois qui suivent la fin de votre contrat [1]. Inscrivez-vous donc sans attendre.\n\n**Comment s'inscrire ?**\n- **En ligne** : créez votre espace personnel sur francetravail.fr, rubrique « M'inscrire, me réinscrire » [2][3]. Il vous faut votre pièce d'identité, votre numéro de sécurité sociale et un justificatif de domiciliation [2]. La date de prise en compte de l'inscription est le jour de votre enregistrement en ligne [2].\n- **En agence** : si vous n'avez pas accès à Internet, rendez-vous dans une agence France Travail. Elles accueillent le public le matin, sans rendez-vous, et des agents peuvent vous aider [3].\n- **Par téléphone** : le 39 49 peut vous renseigner [1].\n\n**Documents à fournir.** Votre carte Vitale (avec votre numéro de sécurité sociale) est indispensable. Selon votre situation, il peut aussi falloir une attestation employeur et vos derniers bulletins de salaire [3]. Votre RIB est nécessaire pour percevoir l'allocation si vous y avez droit [2][3]. Vous n'avez pas besoin de tout fournir immédiatement : les documents peuvent être transmis en plusieurs fois [3].\n\n**Après l'inscription.** Vous devez vous rendre à un entretien avec votre conseiller dans les 30 jours au plus tard. Vous choisissez la date et l'heure en ligne, depuis votre espace personnel [2].\n\n**Points à savoir :**\n- L'inscription est gratuite et n'a pas de limite de temps tant que vous remplissez les conditions [3].\n- Vous devez être disponible pour occuper un emploi et vous rendre aux entretiens [4].\n\n**Ce que les extraits ne couvrent pas :** ils ne détaillent pas la durée d'affiliation exigée pour toucher l'allocation chômage, ni les règles propres aux agents publics. Pour savoir si vous avez droit à l'allocation dans votre cas, vérifiez auprès de France Travail.",
+        "secondes": 7.8,
+        "cout": 0.0011629000000000001,
+        "tokens_entree": 3684,
+        "tokens_sortie": 1589,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          3,
+          3,
+          1,
+          2,
+          3,
+          2,
+          2,
+          3,
+          1,
+          3,
+          2,
+          3,
+          3,
+          2,
+          3,
+          4
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "**Quand s'inscrire**\n- Vous pouvez vous inscrire dès le lendemain de votre dernier jour de travail [1][3]. Si vous êtes en préavis, ce sera dès la fin de celui-ci [3].\n- L'inscription n'est pas une obligation [4]. Mais pour percevoir des allocations chômage, il faut s'inscrire au plus tard dans les 12 mois qui suivent la fin de votre contrat [1]. Il faut aussi avoir travaillé une durée minimale, appelée durée d'affiliation [1].\n- Vous n'avez pas besoin d'attendre tous vos documents pour vous inscrire. Vous pouvez les transmettre en plusieurs fois [3].\n\n**Comment s'inscrire**\n- **En ligne** sur le site de France Travail, rubrique « M'inscrire, me réinscrire » [3]. Vous créez votre espace personnel avec votre pièce d'identité, votre numéro de sécurité sociale et un justificatif de domiciliation [2]. La date d'inscription correspond au jour de votre enregistrement par internet [2].\n- **Sur place** dans une agence France Travail si vous n'avez pas accès à Internet. Les agences sont ouvertes le matin sans rendez-vous [3].\n- Si vous avez déjà été inscrit il y a moins de 6 mois, vous pouvez vous réinscrire en ligne, ou en agence si ce n'est pas possible [5].\n\n**Après l'inscription**\n- Vous devez être disponible pour vous inscrire [1].\n- Vous devez avoir un entretien avec votre conseiller dans les 30 jours au plus tard suivant l'inscription. Vous prenez rendez-vous dans votre espace personnel [2].\n- Pour être indemnisé, pensez à fournir votre RIB [2]. Selon votre situation, d'autres documents peuvent être utiles, comme l'attestation employeur et vos derniers bulletins de salaire [3].\n\nPour savoir si vous avez droit à une allocation et à quel montant, les extraits ne donnent pas de détails. Renseignez-vous auprès de France Travail (39 49) [1].",
+        "secondes": 4.8,
+        "cout": 0.014858,
+        "tokens_entree": 3684,
+        "tokens_sortie": 749,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          3,
+          3,
+          4,
+          1,
+          1,
+          3,
+          3,
+          2,
+          2,
+          3,
+          5,
+          1,
+          2,
+          2,
+          3,
+          1
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "inscription France Travail, délai d'inscription, demandeur d'emploi, perte d'emploi, fin de contrat, licenciement, inscription en ligne, pièces justificatives, allocation de retour à l'emploi (ARE), date d'inscription, démarches après perte d'emploi",
+    "cout_reformulation": 8.67e-05,
+    "fichiers_sans": [
+      "13-radiation-france-travail.md",
+      "10-actualisation-obligations.md",
+      "12-contrat-engagement-obligations.md",
+      "04-inscription-france-travail.md",
+      "04-inscription-france-travail.md"
+    ],
+    "fichiers_avec": [
+      "04-inscription-france-travail.md",
+      "04-inscription-france-travail.md",
+      "04-inscription-france-travail.md",
+      "04-inscription-france-travail.md",
+      "04-inscription-france-travail.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      false,
+      false,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q05",
+    "question": "Puis-je toucher le chômage si je démissionne pour me reconvertir ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "05-demission-reconversion.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Oui, c'est possible sous certaines conditions. Une démission pour reconversion professionnelle ouvre droit à l'allocation chômage (ARE) si vous remplissez **toutes** les conditions suivantes :\n\n- **Être en CDI de droit privé** au moment de la démission [1].\n- **Avoir travaillé au moins 1 300 jours sur les 60 derniers mois** (5 ans). Ces jours peuvent venir de plusieurs employeurs, mais les congés sans solde, sabbatiques et périodes de disponibilité ne comptent pas [1].\n- **Avoir un projet de reconversion réel et sérieux, validé par une association Transition Pro (ATpro)** [1].\n\nLe moment compte beaucoup. Vous ne devez démissionner **qu'après la validation de votre projet** par l'ATpro. Si vous démissionnez avant, vous ne pourrez pas bénéficier de l'allocation chômage [2]. Une fois le projet validé, vous devez vous inscrire comme demandeur d'emploi **dans les 6 mois** qui suivent cette validation [2]. Vous êtes alors indemnisé comme tout demandeur d'emploi, pendant et après la mise en œuvre du projet [2].\n\nPour vérifier votre éligibilité avant de démissionner, un téléservice est disponible, et vous pouvez contacter votre agence Transition Pro régionale [1].\n\nLes extraits ne précisent pas comment se déroule la validation du projet ni ce qui est demandé pour la constituer. Pour votre cas, vérifiez auprès de votre agence Transition Pro ou de France Travail, en particulier si votre contrat n'est pas un CDI de droit privé ou si vous n'êtes pas sûr de votre nombre de jours travaillés.",
+        "secondes": 4.3,
+        "cout": 0.000813,
+        "tokens_entree": 3575,
+        "tokens_sortie": 911,
+        "elements_trouves": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          1
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Oui, c'est possible, mais seulement si votre démission est considérée comme légitime. Pour cela, trois conditions doivent être réunies en même temps :\n\n- Vous êtes salarié en CDI de droit privé au moment de la démission [1].\n- Vous avez travaillé au moins 1 300 jours (soit 5 ans) au cours des 60 derniers mois [1]. Ces jours peuvent avoir été travaillés chez un ou plusieurs employeurs, mais les congés sans solde, congés sabbatiques et périodes de disponibilité ne comptent pas [1].\n- Vous avez un projet de reconversion bien préparé, reconnu comme réel et sérieux [1].\n\n**Les étapes à suivre**\n\n1. Faites valider votre projet par une association Transition Pro (ATpro) [1].\n2. Démissionnez seulement après cette validation. Si vous démissionnez avant, vous ne pourrez pas toucher l'allocation chômage [2].\n3. Inscrivez-vous comme demandeur d'emploi dans les 6 mois suivant la validation de votre projet [2].\n\nSi tout cela est respecté, vous êtes indemnisé (ARE) comme n'importe quel demandeur d'emploi, pendant et après la mise en œuvre du projet [1][2].\n\nUn téléservice permet de vérifier si vous remplissez les conditions avant de démissionner [1]. Pour une question sur votre situation personnelle, vous pouvez contacter votre agence France Travail [1].\n\nLes extraits ne détaillent pas les règles applicables si vous ne remplissez pas ces conditions de reconversion. Les options de réexamen après 121 jours de chômage, ou après une reprise d'emploi d'au moins 3 mois, y sont décrites pour d'autres motifs de démission (déménagement) [3][4][5]. Pour votre cas, vérifiez auprès de France Travail si elles s'appliquent.",
+        "secondes": 5.0,
+        "cout": 0.01379,
+        "tokens_entree": 3575,
+        "tokens_sortie": 664,
+        "elements_trouves": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      }
+    },
+    "mots_cles": "démission, motif légitime de démission, projet de reconversion professionnelle, allocation d'aide au retour à l'emploi (ARE), conditions d'ouverture de droits, admission à l'ARE, privation involontaire d'emploi, démissionnaire, projet de reconversion, France Travail",
+    "cout_reformulation": 8.65e-05,
+    "fichiers_sans": [
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md"
+    ],
+    "fichiers_avec": [
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q06",
+    "question": "Si je signe une rupture conventionnelle, aurai-je droit au chômage, et puis-je encore changer d'avis après la signature ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "06-rupture-conventionnelle.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "**Sur le chômage :** les extraits que j'ai reçus ne disent rien sur les conditions d'indemnisation chômage après une rupture conventionnelle. Je ne peux donc pas vous dire si vous y aurez droit. Renseignez-vous auprès de France Travail avant de signer.\n\n**Sur le droit de changer d'avis :** oui, pendant un délai de rétractation de 15 jours calendaires [1]. Ce délai commence le lendemain de la signature [1]. S'il se termine un samedi, un dimanche ou un jour férié ou chômé, il est reporté au premier jour ouvrable suivant [1]. La date de fin figure sur la convention [1].\n\nPour vous rétracter, vous devez informer l'autre partie par lettre recommandée avec accusé de réception ou par lettre remise en main propre contre décharge. Vous n'avez pas à donner de motif [1].\n\nSi personne ne se rétracte, la convention est envoyée à la DDETSPP pour homologation [4]. La date de rupture du contrat ne peut pas être antérieure au lendemain de cette homologation [3]. Aucun préavis n'est prévu [2].\n\nLes extraits concernent les salariés du secteur privé. Si vous êtes salarié protégé, la procédure d'homologation est différente [4][5].",
+        "secondes": 4.2,
+        "cout": 0.0006156,
+        "tokens_entree": 2061,
+        "tokens_sortie": 819,
+        "elements_trouves": [
+          false,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          4,
+          3,
+          2,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "**Peut-on changer d'avis après la signature ?** Oui. Vous et votre employeur disposez d'un droit de rétractation de 15 jours calendaires [1]. Ce délai commence le lendemain de la signature de la convention [1]. Si le dernier jour tombe un samedi, un dimanche ou un jour férié ou chômé, il est prolongé jusqu'au premier jour ouvrable suivant [1]. Pour vous rétracter, vous informez l'autre partie par lettre recommandée avec accusé de réception, ou par lettre remise en main propre contre décharge, sans avoir à donner de motif [1]. La date de fin du délai est inscrite sur la convention [1].\n\n**Aurez-vous droit au chômage ?** Les extraits fournis ne parlent pas de l'assurance chômage après une rupture conventionnelle, donc je ne peux pas vous répondre sur ce point. Je ne veux pas deviner : les conditions (durée travaillée, montant, délais) peuvent changer. Renseignez-vous directement auprès de France Travail, qui pourra étudier votre situation.",
+        "secondes": 3.0,
+        "cout": 0.007932,
+        "tokens_entree": 2061,
+        "tokens_sortie": 381,
+        "elements_trouves": [
+          false,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "rupture conventionnelle, droit à l'ARE, éligibilité à l'allocation d'aide au retour à l'emploi, conditions d'ouverture de droits, privation involontaire d'emploi, délai de rétractation, rétractation de la rupture conventionnelle, délai de 15 jours calendaires, homologation de la rupture conventionnelle, DREETS, demande d'homologation, date de fin de contrat",
+    "cout_reformulation": 0.0001099,
+    "fichiers_sans": [
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md"
+    ],
+    "fichiers_avec": [
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md",
+      "06-rupture-conventionnelle.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      false,
+      true
+    ],
+    "infos_avec": [
+      false,
+      true
+    ]
+  },
+  {
+    "id": "q07",
+    "question": "Je vais suivre une formation validée par France Travail. Est-ce que je continue à toucher une allocation ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "07-formation-aref.md",
+      "02-montant-are.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Cela dépend de votre situation. Si vous touchez déjà l'allocation d'aide au retour à l'emploi (ARE), vous pouvez continuer à être indemnisé pendant la formation, sous forme d'**aide au retour à l'emploi formation (Aref)**, si trois conditions sont réunies :\n\n- vous percevez l'ARE ;\n- la formation se déroule dans le cadre de votre contrat d'engagement, de votre projet personnalisé d'accès à l'emploi (PPAE) ou de votre compte personnel de formation (CPF) ;\n- la formation dure au moins 40 heures [2].\n\nSi vous ne percevez pas (ou plus) l'ARE le jour de votre entrée en formation, vous pouvez peut-être bénéficier de la rémunération des formations de France Travail (RFPE), sous certaines conditions. Les extraits ne détaillent pas ces conditions [2].\n\nPour les **agents publics** dont le contrat prend fin à partir du 1er avril 2025, l'Aref ne peut pas être inférieure à 22,99 € et l'ARE ne peut pas être inférieure à 32,13 €. Si votre durée de travail était inférieure à la durée légale ou conventionnelle, ces minimums sont réduits proportionnellement [3][4][5].\n\nLes extraits ne permettent pas de savoir si votre formation entre bien dans ces conditions, ni quel montant vous toucherez, car il manque des informations : votre statut (secteur privé ou agent public), votre âge, la date de fin de contrat et la durée de la formation. Le terme « validée » n'est pas exactement celui utilisé dans les conditions (« formation France Travail » dans le cadre d'un contrat d'engagement, d'un PPAE ou d'un CPF). Pour savoir précisément si vous aurez droit à l'Aref et combien vous toucherez, vérifiez auprès de France Travail, en précisant le contexte de votre formation.",
+        "secondes": 4.9,
+        "cout": 0.0007191,
+        "tokens_entree": 2021,
+        "tokens_sortie": 1034,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          2,
+          2,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Oui, c'est possible, mais cela dépend de votre situation.\n\n**Si vous touchez l'ARE (allocation chômage) le jour où vous commencez la formation**, vous pouvez bénéficier de l'aide au retour à l'emploi formation (Aref), à condition de remplir ces 3 conditions [2] :\n- percevoir l'ARE ;\n- suivre une formation France Travail dans le cadre de votre contrat d'engagement, de votre projet personnalisé d'accès à l'emploi (PPAE) ou de votre compte personnel de formation (CPF) ;\n- suivre une formation d'au moins 40 heures.\n\n**Si vous ne touchez pas (ou plus) l'ARE le jour de l'inscription en formation**, vous pouvez, sous certaines conditions, avoir droit à la rémunération des formations de France Travail (RFPE) [2]. Les extraits ne détaillent pas ces conditions.\n\n**Pour les agents publics** dont le contrat s'est terminé à compter du 1er avril 2025, le montant minimal de l'Aref est de 22,99 €, contre 32,13 € pour le minimum de l'ARE [3][4][5]. Ce minimum est réduit proportionnellement si votre durée de travail était inférieure à la durée légale ou conventionnelle [3][4][5].\n\nLes extraits ne donnent pas le montant exact de l'Aref dans les autres situations. Pour connaître votre cas précis et le montant, je vous conseille de vérifier auprès de France Travail.",
+        "secondes": 3.9,
+        "cout": 0.009302,
+        "tokens_entree": 2021,
+        "tokens_sortie": 526,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          2,
+          2,
+          3,
+          4,
+          5,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "formation validée par France Travail, maintien de l'ARE, allocation d'aide au retour à l'emploi, suivi d'une formation, formation prescrite ou agréée par France Travail, rémunération pendant la formation, cumul ARE et formation, allocation de fin de formation",
+    "cout_reformulation": 8.44e-05,
+    "fichiers_sans": [
+      "07-formation-aref.md",
+      "13-radiation-france-travail.md",
+      "05-demission-reconversion.md",
+      "14-suppression-allocations.md",
+      "04-inscription-france-travail.md"
+    ],
+    "fichiers_avec": [
+      "07-formation-aref.md",
+      "07-formation-aref.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      false,
+      false
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q08",
+    "question": "Je suis fonctionnaire et j'ai été licencié : qui me verse l'allocation chômage ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "08-chomage-agents-publics.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Si vous êtes fonctionnaire licencié, vous faites partie des personnes considérées comme involontairement privées d'emploi et pouvez prétendre aux allocations chômage [4][5]. C'est ensuite votre parcours professionnel qui détermine qui vous verse l'allocation :\n\n- **Si vous avez travaillé plus longtemps dans la fonction publique** sur la période prise en compte pour le calcul de vos droits, c'est **votre employeur public** qui vous indemnise [1][2][3].\n- **Si vous avez travaillé plus longtemps dans le secteur privé** sur cette même période, c'est **France Travail** qui vous indemnise [1][2][3].\n\nDans certains cas, par exemple pour certains ministères, l'employeur public a signé une convention de gestion avec France Travail. France Travail est alors votre seul interlocuteur, y compris pour savoir si vous avez droit à l'allocation [1][2][3].\n\nVotre administration doit vous remettre une attestation France Travail, à utiliser pour faire valoir vos droits, ainsi qu'un certificat de travail [1][2][3].\n\nLes extraits ne détaillent pas comment calculer la période de référence ni ne précisent votre cas personnel. Pour savoir qui vous paiera exactement, renseignez-vous auprès de votre service des ressources humaines ou de France Travail, en leur indiquant la durée de vos emplois publics et privés.",
+        "secondes": 3.9,
+        "cout": 0.0007512,
+        "tokens_entree": 3697,
+        "tokens_sortie": 763,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          4,
+          5,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Un fonctionnaire licencié est considéré comme involontairement privé d'emploi, ce qui lui permet de prétendre aux allocations chômage [4][5]. Il faut aussi être physiquement apte à l'exercice d'un emploi et résider en France de manière stable et régulière [4][5].\n\nPour savoir qui vous verse l'allocation, tout dépend de votre parcours sur la période prise en compte pour le calcul de vos droits :\n- Si vous avez travaillé plus longtemps dans la fonction publique que dans le secteur privé, c'est votre employeur public qui vous indemnise [1][2][3].\n- Si vous avez travaillé plus longtemps dans le secteur privé, c'est France Travail qui vous indemnise [1][2][3].\n\nIl y a une exception : si votre employeur public a signé une convention de gestion avec France Travail (par exemple pour certains ministères), votre seul interlocuteur est France Travail, y compris pour savoir si vous avez droit à l'ARE [1][2][3].\n\nDans tous les cas, votre administration doit vous remettre l'attestation France Travail et un certificat de travail [1][2][3].\n\nCes informations concernent les fins de contrat à compter du 1er avril 2025. Les extraits ne permettent pas de dire quel cas s'applique à vous : pour le savoir, vérifiez auprès de votre administration ou de France Travail.",
+        "secondes": 3.5,
+        "cout": 0.012214,
+        "tokens_entree": 3697,
+        "tokens_sortie": 482,
+        "elements_trouves": [
+          true,
+          true,
+          false
+        ],
+        "citations": [
+          4,
+          5,
+          4,
+          5,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3,
+          1,
+          2,
+          3
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "agent public, fonctionnaire, licenciement, allocation d'aide au retour à l'emploi, ARE, indemnisation chômage, employeur public, France Travail, contrat, rupture conventionnelle, perte involontaire d'emploi, prise en charge par l'employeur, remboursement, agent contractuel",
+    "cout_reformulation": 9.080000000000001e-05,
+    "fichiers_sans": [
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "05-demission-reconversion.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "fichiers_avec": [
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      false,
+      true,
+      false
+    ],
+    "infos_avec": [
+      true,
+      true,
+      false
+    ]
+  },
+  {
+    "id": "q09",
+    "question": "Si je reprends un travail à temps partiel, est-ce que je garde une partie de mon allocation chômage ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "09-cumul-reprise-emploi.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Oui, dans les situations décrites par les fiches, vous pouvez garder une partie de votre allocation si vous reprenez une activité salariée tout en restant à la recherche d'un emploi. Dans ce cas, l'ARE est versée partiellement [1].\n\n**Comment le montant est calculé**\n\n- Le nombre de jours indemnisés par mois se calcule ainsi : (montant de l'ARE mensuelle − 70 % du salaire de votre nouvelle activité) / montant de l'ARE journalière. Le résultat est arrondi à l'entier le plus proche [1].\n- Le montant versé est ensuite le montant de l'ARE journalière multiplié par ce nombre de jours [1].\n- Le total de l'ARE versée et de votre revenu d'activité ne doit pas dépasser votre salaire journalier de référence (SJR) [1].\n\n**Les démarches et conséquences**\n\n- Vous devez déclarer la reprise d'activité lors de l'actualisation mensuelle de votre situation [1].\n- Si vous ne pouvez pas fournir tout de suite le justificatif de vos revenus, France Travail verse une avance provisoire, puis régularise le mois suivant la remise du justificatif [1].\n- Les jours non indemnisés reportent d'autant la fin de votre indemnisation [1].\n\n**Selon votre situation**\n\nLes règles sont les mêmes pour les salariés du secteur privé et pour les agents publics, et le calcul ne change pas selon l'âge dans les extraits fournis [1][2][3][4][5]. Les extraits ne disent pas si le temps partiel est traité différemment d'un autre type de reprise d'activité, ni ce qui se passe si vous ne déclarez plus chercher un emploi.\n\nLes extraits ne couvrent pas le cas des agents publics de moins de 55 ans. Pour votre situation précise, notamment si votre fin de contrat est antérieure au 1er avril 2025, vérifiez auprès de France Travail.",
+        "secondes": 5.1,
+        "cout": 0.0009187,
+        "tokens_entree": 3737,
+        "tokens_sortie": 1090,
+        "elements_trouves": [
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Oui, en principe : si vous reprenez une activité salariée et que vous déclarez rester à la recherche d'un emploi, votre allocation (ARE) est versée partiellement [1][2][3][4][5].\n\n**Comment c'est calculé :**\n- L'ARE versée = ARE journalière × nombre de jours indemnisables dans le mois [1].\n- Ce nombre de jours = (ARE mensuelle − 70 % du salaire de votre nouvelle activité) ÷ ARE journalière, arrondi à l'entier le plus proche [1].\n- Votre allocation et votre salaire cumulés ne doivent pas dépasser votre salaire journalier de référence (SJR) [1].\n\n**À savoir :**\n- Les jours non indemnisés ne sont pas perdus : ils reculent d'autant la fin de votre indemnisation [1].\n- Vous devez déclarer votre reprise d'activité lors de l'actualisation mensuelle. Si vous n'avez pas encore votre justificatif de revenus, France Travail verse une avance provisoire, puis régularise le mois suivant la fourniture du justificatif [1].\n- Si vous perdez un emploi mais en gardez un autre, l'ARE est cumulée intégralement avec les revenus de l'emploi conservé [1].\n\nCes règles valent pour les salariés du privé et les agents publics dont le contrat a pris fin à partir du 1er avril 2025, quel que soit l'âge (moins de 55 ans, 55-56 ans, 57 ans et plus) [1][2][3][4][5]. Si votre fin de contrat est antérieure, les extraits ne permettent pas de répondre : vérifiez auprès de France Travail.\n\nLes extraits ne contiennent pas de calcul adapté à votre cas précis. Pour connaître le montant exact que vous toucheriez, rapprochez-vous de France Travail.",
+        "secondes": 4.6,
+        "cout": 0.013944,
+        "tokens_entree": 3737,
+        "tokens_sortie": 647,
+        "elements_trouves": [
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "cumul ARE et reprise d'activité, travail à temps partiel, salaire, activité réduite, maintien partiel de l'ARE, allocation d'aide au retour à l'emploi, montant de l'ARE, déclaration de situation mensuelle, actualisation mensuelle, France Travail",
+    "cout_reformulation": 8.8e-05,
+    "fichiers_sans": [
+      "13-radiation-france-travail.md",
+      "13-radiation-france-travail.md",
+      "10-actualisation-obligations.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "fichiers_avec": [
+      "09-cumul-reprise-emploi.md",
+      "09-cumul-reprise-emploi.md",
+      "09-cumul-reprise-emploi.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      false,
+      false
+    ],
+    "infos_avec": [
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Quand dois-je faire mon actualisation pour le mois de novembre 2026 ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "10-actualisation-obligations.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Pour l'actualisation du mois de novembre 2026, le calendrier indique une période d'ouverture du **28 novembre 2026** au **15 décembre 2026** [1]. Le premier virement correspondant est prévu à partir du **2 décembre 2026** [1].\n\nLe calendrier ne précise pas explicitement quel mois d'allocation chaque actualisation couvre. Pour confirmer, vérifiez auprès de France Travail, notamment si vous voulez être certain de la date limite.",
+        "secondes": 4.7,
+        "cout": 0.0008016,
+        "tokens_entree": 3336,
+        "tokens_sortie": 936,
+        "elements_trouves": [
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          1
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Pour le mois de novembre 2026, l'actualisation ouvre le 28 novembre 2026 et se clôture le 15 décembre 2026 [1].\n\nSi vous actualisez dès l'ouverture, le premier virement est transmis à votre banque à partir du 2 décembre 2026. La somme apparaît ensuite sur votre compte dans les jours qui suivent, selon les délais de votre banque [1].\n\nIl faut respecter ce calendrier : au-delà de la date de clôture, les extraits ne précisent pas ce qui se passe. Pour le savoir, vérifiez auprès de France Travail.\n\nLe paiement dépend aussi de ce que vous déclarez chaque mois (reprise d'activité, formation, maladie, etc.) [5].",
+        "secondes": 2.5,
+        "cout": 0.009282,
+        "tokens_entree": 3336,
+        "tokens_sortie": 261,
+        "elements_trouves": [
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          1,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "actualisation mensuelle, date limite d'actualisation, actualisation tous les mois, mois de novembre 2026, calendrier d'actualisation, France Travail, ARE, demandeur d'emploi",
+    "cout_reformulation": 7.170000000000001e-05,
+    "fichiers_sans": [
+      "10-actualisation-obligations.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "02-montant-are.md"
+    ],
+    "fichiers_avec": [
+      "10-actualisation-obligations.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "02-montant-are.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q11",
+    "question": "Je ne suis pas d'accord avec une décision de France Travail, que puis-je faire ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "11-contester-decision.md",
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Cela dépend du type de décision. Les extraits portent surtout sur les sanctions et les radiations. Pour une radiation, la procédure est la suivante :\n\n1. **Réclamation auprès de France Travail** : c'est la première étape [2].\n2. **Saisine du médiateur régional** : si la réponse ne vous satisfait pas, vous devez saisir le médiateur. Cette étape est obligatoire avant de pouvoir saisir le juge [1][2]. Le médiateur doit confirmer la prise en compte de votre demande sous 7 jours et, s'il refuse, vous indiquer ses raisons [4].\n3. **Tribunal administratif** : si le désaccord persiste après la médiation, vous pouvez saisir le juge administratif. Le tribunal compétent est celui du lieu de l'agence France Travail qui a pris la décision [1][2].\n\nVous avez **2 mois à compter de la décision** pour agir [1][2]. Pendant la durée de votre recours, la décision de France Travail continue de s'appliquer [1].\n\nSelon les extraits, d'autres cas ont leurs propres voies de recours :\n\n- **Non-déclaration d'un changement de situation** : vous pouvez saisir une instance paritaire régionale (IPR), par lettre recommandée avec accusé de réception adressée au directeur de votre agence. Vous pouvez aussi faire un recours gracieux ou contentieux devant le tribunal administratif du lieu où la décision a été prise [3].\n- **Sanctions, transfert de catégorie, cessation d'inscription, remboursement de prestations versées en trop** : la saisine du médiateur régional est aussi une étape obligatoire avant le juge [4].\n\nPour savoir quelles étapes suivre dans votre cas, reportez-vous au courrier qui vous a notifié la décision. Vous pouvez le retrouver dans votre espace personnel France Travail, rubrique « Mes courriers reçus » [1][4]. Pour toute question sur les délais ou la procédure, contactez France Travail, car les extraits ne couvrent pas tous les types de décisions.",
+        "secondes": 6.5,
+        "cout": 0.000977,
+        "tokens_entree": 2970,
+        "tokens_sortie": 1360,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          2,
+          1,
+          2,
+          4,
+          1,
+          2,
+          1,
+          2,
+          1,
+          3,
+          4,
+          1,
+          4
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "La marche à suivre dépend du type de décision. Les extraits ne couvrent pas tous les cas.\n\n**Si vous êtes radié de la liste des demandeurs d'emploi**, vous avez 2 mois à compter de la décision pour la contester [1][2] :\n1. Faites d'abord une réclamation auprès de France Travail [1][2].\n2. Si la réponse ne vous satisfait pas, saisissez le médiateur de France Travail. Cette étape est obligatoire avant de pouvoir saisir le juge [1][2].\n3. Si le désaccord persiste après la médiation, vous pouvez saisir le juge administratif. Le tribunal compétent est celui où se trouve l'agence France Travail qui a pris la décision [1][2].\n\nLa décision de France Travail continue de s'appliquer pendant votre recours [1][2].\n\n**Le recours au médiateur** est aussi un passage obligatoire avant le juge pour d'autres décisions : sanction, cessation d'inscription, transfert de catégorie, certaines allocations (allocation de solidarité spécifique, allocation du contrat d'engagement jeune) et demandes de remboursement de sommes versées en trop [4]. Le médiateur confirme la prise en compte de votre demande sous 7 jours. S'il refuse votre réclamation, il doit vous en expliquer les raisons [4].\n\n**Pour un litige lié à une situation non déclarée à l'actualisation**, les extraits indiquent que vous pouvez saisir une instance paritaire régionale (IPR). Il faut adresser une lettre recommandée avec accusé de réception au directeur de votre agence. Vous pouvez aussi faire un recours gracieux ou contentieux devant le tribunal administratif du lieu où la décision a été prise, pas forcément celui de votre domicile [3].\n\n**Dans tous les cas**, le courrier de notification de la décision précise les étapes à suivre. Vous pouvez le retrouver dans votre espace personnel France Travail, rubrique « Mes courriers reçus » [1][4].\n\nSi votre décision ne correspond à aucun de ces cas, les extraits ne permettent pas de vous répondre précisément. Renseignez-vous alors auprès de France Travail. Si vous m'indiquez de quelle décision il s'agit, je pourrai vous orienter plus précisément.",
+        "secondes": 5.6,
+        "cout": 0.01397,
+        "tokens_entree": 2970,
+        "tokens_sortie": 803,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          4,
+          4,
+          3,
+          1,
+          4
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "recours contre une décision France Travail, contestation décision, recours administratif préalable, recours gracieux, recours hiérarchique, tribunal administratif, saisine du médiateur, délai de recours, notification de décision, motivation de la décision, sanction, radiation, suspension de l'allocation, ARE, allocation d'aide au retour à l'emploi",
+    "cout_reformulation": 9.640000000000001e-05,
+    "fichiers_sans": [
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md",
+      "10-actualisation-obligations.md",
+      "11-contester-decision.md",
+      "06-rupture-conventionnelle.md"
+    ],
+    "fichiers_avec": [
+      "14-suppression-allocations.md",
+      "13-radiation-france-travail.md",
+      "10-actualisation-obligations.md",
+      "11-contester-decision.md",
+      "06-rupture-conventionnelle.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      true,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q12",
+    "question": "Suis-je obligé d'accepter n'importe quelle offre d'emploi ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "12-contrat-engagement-obligations.md",
+      "13-radiation-france-travail.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Non, vous n'êtes pas obligé d'accepter n'importe quelle offre. Vous devez accepter une offre dite « raisonnable », c'est-à-dire correspondant à vos compétences professionnelles [1][2].\n\n**Ce qui détermine si une offre est raisonnable**\n\nElle dépend de plusieurs critères :\n- votre formation, vos qualifications et vos compétences professionnelles ;\n- votre situation personnelle et familiale ;\n- la situation du marché du travail local ;\n- le type d'emploi recherché (CDI, CDD, temps plein ou partiel) ;\n- la zone géographique de recherche ;\n- le salaire attendu [1][2].\n\nCes éléments sont définis avec votre conseiller France Travail, dans un délai de 6 mois après la signature de votre contrat d'engagement, puis lors de ses actualisations périodiques [1][2].\n\n**Les conséquences d'un refus**\n\nRefuser 2 offres raisonnables sans motif légitime peut entraîner une radiation de la liste des demandeurs d'emploi et, si vous êtes indemnisé, la suppression de votre allocation [1][2][3]. Le refus d'une offre impliquant de travailler le dimanche n'est pas, à lui seul, un motif de radiation [3].\n\nLes manquements à vos obligations entraînent d'abord une notification de premier manquement, avec une suspension d'au moins 30 % de l'allocation pendant 1 à 2 mois. En cas de nouveau manquement, la sanction peut aller jusqu'à la suspension totale (100 %) et la radiation [5].\n\n**Ce qui manque dans les extraits**\n\nLe premier extrait s'arrête sur « Vous n'êtes pas obligé d'accepter : », sans donner la liste des cas concernés. Je ne peux donc pas vous dire quels sont les motifs légitimes de refus. Pour votre situation précise, renseignez-vous auprès de votre conseiller France Travail.",
+        "secondes": 5.4,
+        "cout": 0.0009534000000000001,
+        "tokens_entree": 3914,
+        "tokens_sortie": 1124,
+        "elements_trouves": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          3,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Non, vous n'êtes pas obligé d'accepter n'importe quelle offre, mais vous devez accepter toute offre « raisonnable » d'emploi, c'est-à-dire une offre qui correspond à vos compétences professionnelles [1][2].\n\n**Ce qui définit une offre raisonnable** [1][2] :\n- votre formation, vos qualifications et vos compétences ;\n- votre situation personnelle et familiale ;\n- la situation du marché du travail local ;\n- le type d'emploi recherché (CDI, CDD, temps plein ou partiel) ;\n- la zone géographique de recherche ;\n- le salaire attendu.\n\nCes éléments sont définis avec votre conseiller France Travail dans un délai de 6 mois après la signature du contrat d'engagement, puis lors de son actualisation périodique [1][2].\n\n**Risques en cas de refus** : si vous refusez 2 offres raisonnables sans motif légitime, vous pouvez être radié de la liste des demandeurs d'emploi et votre allocation peut être supprimée si vous êtes indemnisé [1][2][3]. Les extraits indiquent aussi des sanctions graduées (suspension partielle puis totale de l'allocation) en cas de manquement aux obligations du contrat d'engagement [5].\n\n**Exemple de refus non sanctionné** : refuser une offre impliquant de travailler le dimanche n'est pas un motif de radiation [3].\n\nLes extraits ne détaillent pas tous les cas où vous n'êtes « pas obligé d'accepter » une offre (la liste est tronquée) ni ce qu'est un « motif légitime ». Pour votre situation précise, vérifiez auprès de votre conseiller France Travail.",
+        "secondes": 4.1,
+        "cout": 0.013758,
+        "tokens_entree": 3914,
+        "tokens_sortie": 593,
+        "elements_trouves": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          3,
+          5,
+          3
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      }
+    },
+    "mots_cles": "offre raisonnable d'emploi, refus d'offre, obligations du demandeur d'emploi, recherche active d'emploi, offre d'emploi convenable, critères de convenance, salaire, qualification, distance du domicile, durée du trajet, sanction, radiation, perte de l'ARE, actualisation mensuelle, projet personnalisé d'accès à l'emploi, PPAE, France Travail, Allocation de retour à l'emploi, ARE",
+    "cout_reformulation": 0.00011509999999999999,
+    "fichiers_sans": [
+      "13-radiation-france-travail.md",
+      "12-contrat-engagement-obligations.md",
+      "05-demission-reconversion.md",
+      "05-demission-reconversion.md",
+      "13-radiation-france-travail.md"
+    ],
+    "fichiers_avec": [
+      "13-radiation-france-travail.md",
+      "12-contrat-engagement-obligations.md",
+      "13-radiation-france-travail.md",
+      "12-contrat-engagement-obligations.md",
+      "13-radiation-france-travail.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q13",
+    "question": "Qu'est-ce que je risque si je ne vais pas à un rendez-vous France Travail sans raison valable ?",
+    "hors_corpus": false,
+    "fichiers_attendus": [
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md"
+    ],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Si vous ne vous présentez pas à un rendez-vous fixé par France Travail sans motif légitime, cela peut entraîner une sanction. L'absence à un rendez-vous fait partie des motifs de radiation de la liste des demandeurs d'emploi [1][2][3].\n\nLa sanction dépend de la date du manquement, car les règles ont changé le 1er juin 2025.\n\n**Pour un manquement à partir du 1er juin 2025 :**\n- **Premier manquement** : vous recevez une notification et risquez une suspension d'au moins 30 % de votre allocation, pendant 1 à 2 mois [1][2].\n- **Manquements suivants** : une sanction plus lourde peut être appliquée. Selon une fiche, elle peut aller jusqu'à la suspension totale (100 %) de l'allocation et la radiation [1]. Selon l'autre fiche, elle peut aller jusqu'à la radiation [2]. En cas de persistance, la suspension peut durer de 1 à 4 mois [1][2].\n- **Sanction anticipée** : pendant une suspension, vous pouvez y mettre fin plus tôt en respectant, avant son terme, les engagements définis avec votre référent [1][2].\n\n**Pour un manquement avant le 1er juin 2025 :**\n- **Premier manquement** : radiation d'1 mois [4][5].\n- **Deuxième manquement** : radiation de 2 mois consécutifs [4][5].\n- **À partir du troisième manquement** : radiation de 4 mois consécutifs [4][5].\n\nLes extraits ne précisent pas ce qui constitue un « motif légitime » (par exemple un empêchement grave). Pour savoir si votre absence peut être justifiée, et pour connaître la sanction exacte qui vous concerne, contactez France Travail rapidement, idéalement avant ou dès que vous avez manqué le rendez-vous.",
+        "secondes": 5.2,
+        "cout": 0.0009762999999999999,
+        "tokens_entree": 4208,
+        "tokens_sortie": 1111,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          2,
+          3,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Une absence à un rendez-vous fixé par France Travail sans motif légitime fait partie des motifs de radiation de la liste des demandeurs d'emploi [1][3]. Ce que vous risquez dépend de la date du manquement.\n\n**Depuis le 1er juin 2025**\n- Vous recevez d'abord une notification de premier manquement. Elle entraîne une première sanction : une suspension d'au moins 30 % de votre allocation, pendant 1 à 2 mois [1][2].\n- Si vous continuez à manquer à vos obligations, une seconde sanction peut aller jusqu'à la suspension totale (100 %) de l'allocation et la radiation de la liste des demandeurs d'emploi [1]. En cas de persistance, la suspension peut durer de 1 à 4 mois [1][2].\n- Si vos allocations sont suspendues, vous pouvez mettre fin à la sanction avant son terme en répondant aux engagements définis avec votre organisme référent [1][2].\n\n**Avant le 1er juin 2025**\nLa radiation durait [4][5] :\n- 1 mois au 1er manquement ;\n- 2 mois consécutifs au 2e manquement ;\n- 4 mois consécutifs à partir du 3e manquement.\n\nLes extraits ne détaillent pas ce qui est considéré comme un « motif légitime ». Si vous avez une raison pour votre absence, ou si vous avez déjà reçu une notification, contactez France Travail pour connaître votre situation précise.",
+        "secondes": 3.5,
+        "cout": 0.013556,
+        "tokens_entree": 4208,
+        "tokens_sortie": 514,
+        "elements_trouves": [
+          true,
+          true,
+          true
+        ],
+        "citations": [
+          1,
+          3,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          2,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": false
+      }
+    },
+    "mots_cles": "rendez-vous France Travail, convocation, absence à un rendez-vous, motif légitime, manquement aux obligations, sanction, suspension de l'ARE, réduction de l'allocation, radiation, demandeur d'emploi, accompagnement",
+    "cout_reformulation": 0.00012969999999999998,
+    "fichiers_sans": [
+      "14-suppression-allocations.md",
+      "13-radiation-france-travail.md",
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md",
+      "13-radiation-france-travail.md"
+    ],
+    "fichiers_avec": [
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md",
+      "13-radiation-france-travail.md",
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md"
+    ],
+    "recherche_sans_ok": true,
+    "recherche_avec_ok": true,
+    "infos_sans": [
+      true,
+      true,
+      true
+    ],
+    "infos_avec": [
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "id": "q14",
+    "question": "Comment calculer le montant de ma future pension de retraite ?",
+    "hors_corpus": true,
+    "fichiers_attendus": [],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Les extraits fournis ne permettent pas de répondre à votre question. Ils ne décrivent pas la manière de calculer une pension de retraite.\n\nIls mentionnent seulement la retraite dans le cadre de l'allocation chômage (ARE) :\n- Le maintien de droits permet d'être indemnisé jusqu'à l'âge d'obtention d'une retraite à taux plein, sous conditions. Il concerne les allocataires à partir de 64 ans, avec un âge qui dépend de l'année de naissance (de 62 ans et 3 mois pour les personnes nées en 1961, jusqu'à 63 ans et 9 mois pour celles nées en 1967) [1].\n- Le versement de l'ARE cesse lorsque vous remplissez les conditions pour une retraite à taux plein, ou que vous atteignez l'âge limite d'activité (pour les agents publics, selon les extraits 4 et 5) [4][5].\n\nPour estimer votre future pension, adressez-vous à votre caisse de retraite ou consultez votre relevé de carrière. Vous pouvez aussi interroger France Travail pour votre situation au regard de l'ARE.",
+        "secondes": 4.0,
+        "cout": 0.0006415,
+        "tokens_entree": 2745,
+        "tokens_sortie": 734,
+        "elements_trouves": [],
+        "citations": [
+          1,
+          4,
+          5
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Les extraits fournis ne permettent pas de répondre à votre question. Ils portent sur l'assurance chômage (ARE, Aref, maintien de droits, arrêt du versement), pas sur le calcul d'une pension de retraite.\n\nIls donnent seulement quelques éléments liés à la retraite :\n- Le maintien de l'ARE jusqu'à l'obtention d'une retraite à taux plein est possible sous conditions, notamment être indemnisé depuis au moins 1 an et justifier d'un nombre minimal de trimestres de retraite [1].\n- Le versement de l'ARE s'arrête quand vous remplissez les conditions pour une retraite à taux plein ou atteignez l'âge limite d'activité (agents publics) [4][5].\n- Un départ à la retraite doit être signalé à France Travail [2].\n\nPour estimer votre pension, adressez-vous à votre caisse de retraite ou consultez votre relevé de carrière. Pour tout ce qui concerne votre indemnisation chômage, vérifiez auprès de France Travail.",
+        "secondes": 3.0,
+        "cout": 0.00916,
+        "tokens_entree": 2745,
+        "tokens_sortie": 367,
+        "elements_trouves": [],
+        "citations": [
+          1,
+          4,
+          5,
+          2
+        ],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "retraite, calcul du montant de la pension, pension de retraite, régime général, assurance vieillesse, durée d'assurance, trimestres validés, salaire annuel moyen, taux de liquidation, âge légal de départ à la retraite, retraite complémentaire, France Travail, Assurance retraite",
+    "cout_reformulation": 8.730000000000001e-05,
+    "fichiers_sans": [
+      "10-actualisation-obligations.md",
+      "07-formation-aref.md",
+      "10-actualisation-obligations.md",
+      "06-rupture-conventionnelle.md",
+      "01-conditions-are.md"
+    ],
+    "fichiers_avec": [
+      "01-conditions-are.md",
+      "10-actualisation-obligations.md",
+      "07-formation-aref.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "recherche_sans_ok": false,
+    "recherche_avec_ok": false,
+    "infos_sans": [],
+    "infos_avec": []
+  },
+  {
+    "id": "q15",
+    "question": "À combien ai-je droit pour l'aide au logement (APL) de la CAF ?",
+    "hors_corpus": true,
+    "fichiers_attendus": [],
+    "reponses": {
+      "claude-haiku-5-5": {
+        "texte": "Les extraits fournis ne permettent pas de répondre à votre question. Ils concernent le contrat d'engagement avec France Travail, la notion d'offre raisonnable d'emploi, et l'allocation d'aide au retour à l'emploi (ARE) des agents publics avec l'allocation de solidarité spécifique (ASS). Ils ne disent rien sur l'aide personnalisée au logement (APL) ni sur son montant.\n\nPour connaître le montant auquel vous avez droit, le plus sûr est de contacter la CAF (caf.fr, ou l'application « Caf - Mon compte »). Ce sont eux qui calculent l'APL, notamment à partir de vos ressources, de votre situation familiale et de votre loyer. Vous pouvez aussi utiliser le simulateur en ligne de la CAF pour obtenir une première estimation.\n\nSi vous me transmettez des extraits de fiches sur l'aide au logement, je pourrai vous répondre à partir de ceux-ci.",
+        "secondes": 3.4,
+        "cout": 0.0005851000000000001,
+        "tokens_entree": 2561,
+        "tokens_sortie": 658,
+        "elements_trouves": [],
+        "citations": [],
+        "citations_invalides": [],
+        "abstention": true
+      },
+      "claude-sonnet-5-5": {
+        "texte": "Les extraits fournis ne me permettent pas de répondre à votre question. Ils portent sur le contrat d'engagement, l'offre raisonnable d'emploi et l'allocation de solidarité spécifique (ASS) pour les agents publics. Ils ne disent rien sur les aides au logement (APL) de la CAF, ni sur leur montant.\n\nLe montant de l'APL dépend de la situation de chaque personne. Pour le connaître, je vous conseille de faire une simulation sur le site de la CAF ou de contacter directement votre CAF. Si vous êtes demandeur d'emploi, vous pouvez aussi demander conseil à France Travail.",
+        "secondes": 2.5,
+        "cout": 0.007392,
+        "tokens_entree": 2561,
+        "tokens_sortie": 227,
+        "elements_trouves": [],
+        "citations": [],
+        "citations_invalides": [],
+        "abstention": true
+      }
+    },
+    "mots_cles": "APL, aide personnalisée au logement, CAF, montant de l'aide au logement, calcul de l'APL, allocation logement, aide au logement, barème, ressources, loyer, zone géographique, situation familiale, caisse d'allocations familiales",
+    "cout_reformulation": 7.91e-05,
+    "fichiers_sans": [
+      "01-conditions-are.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "01-conditions-are.md"
+    ],
+    "fichiers_avec": [
+      "12-contrat-engagement-obligations.md",
+      "12-contrat-engagement-obligations.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "recherche_sans_ok": false,
+    "recherche_avec_ok": false,
+    "infos_sans": [],
+    "infos_avec": []
+  }
+]

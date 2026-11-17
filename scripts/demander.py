@@ -105,8 +105,28 @@ class Assistant:
             "cout": config.cout_en_dollars(modele, entree, sortie),
         }
 
+    # Les 3 étapes, utilisables séparément (l'évaluation s'en sert) :
+
+    def reformuler(self, question):
+        return self.appeler(
+            config.MODELE_REFORMULATION, CONSIGNE_REFORMULATION, question,
+            config.EFFORT_REFORMULATION, config.MAX_TOKENS_REFORMULATION,
+        )
+
     def chercher(self, question, mots_cles=""):
-        return self.index.chercher(f"{question} {mots_cles}", n=config.NB_EXTRAITS)
+        """Les morceaux les plus pertinents pour la question (+ mots-clés éventuels)."""
+        resultats = self.index.chercher(f"{question} {mots_cles}", n=config.NB_EXTRAITS)
+        return [m for _, m in resultats]
+
+    def generer(self, question, extraits, modele=None):
+        message = (
+            f"Extraits des fiches officielles :\n\n{formater_extraits(extraits)}\n\n"
+            f"Question : {question}"
+        )
+        return self.appeler(
+            modele or config.MODELE_REPONSE, CONSIGNE_REPONSE, message,
+            config.EFFORT_REPONSE, config.MAX_TOKENS_REPONSE,
+        )
 
     def repondre(self, question):
         """Pose une question. Renvoie un dict avec la réponse, les extraits et les coûts."""
@@ -117,25 +137,11 @@ class Assistant:
                 f"(maximum : {config.LONGUEUR_MAX_QUESTION})."
             )
 
-        # 1. Reformuler
-        reformulation = self.appeler(
-            config.MODELE_REFORMULATION, CONSIGNE_REFORMULATION, question,
-            config.EFFORT_REFORMULATION, config.MAX_TOKENS_REFORMULATION,
-        )
-        # 2. Chercher (sur la question d'origine + les mots-clés officiels)
-        extraits = [m for _, m in self.chercher(question, reformulation["texte"])]
+        reformulation = self.reformuler(question)                  # 1. Reformuler
+        extraits = self.chercher(question, reformulation["texte"])  # 2. Chercher
         appels = [reformulation]
-
-        # 3. Répondre
-        if extraits:
-            message = (
-                f"Extraits des fiches officielles :\n\n{formater_extraits(extraits)}\n\n"
-                f"Question : {question}"
-            )
-            generation = self.appeler(
-                config.MODELE_REPONSE, CONSIGNE_REPONSE, message,
-                config.EFFORT_REPONSE, config.MAX_TOKENS_REPONSE,
-            )
+        if extraits:                                                 # 3. Répondre
+            generation = self.generer(question, extraits)
             appels.append(generation)
             texte = generation["texte"]
         else:
