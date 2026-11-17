@@ -1,0 +1,193 @@
+# Assistant RAG chômage : guide du projet
+
+Ce guide explique, étape par étape, comment est construit l'assistant qui répond aux questions sur le chômage et France Travail en citant ses sources officielles. Chaque notion est expliquée simplement, avec le fichier du projet où la voir.
+
+## Où en est le projet
+
+| Étape | Ce qu'elle fait | État |
+|---|---|---|
+| 0. Collecter | Télécharger 14 fiches de service-public.gouv.fr et les convertir en Markdown fidèle | Terminé |
+| 1. Découper | Couper les fiches en 308 morceaux, chacun avec son fil de titres et sa source | Terminé |
+| 2. Chercher | Retrouver les morceaux pertinents pour une question (BM25, codé à la main) | Terminé |
+| 3. Répondre | Claude reformule la question, puis répond à partir des morceaux en citant ses sources | Terminé |
+| 4. Publier le code | Dépôt Git sécurisé (clé jamais versionnée), puis GitHub | Terminé |
+| 5. Réduire les coûts | Modèles moins chers configurables, limites de taille, coût affiché | Prochaine étape |
+| 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | À faire |
+| 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | À faire |
+| 8. Mettre en ligne | Hébergement sur Hugging Face Spaces, testable par un lien | À faire |
+| 9. Présenter | README du dépôt, texte de présentation | À faire |
+
+Objectif : une V1 en ligne avant le samedi 28 novembre 2026, pour quelques euros d'API au maximum.
+
+## Comment ça marche
+
+Le principe du **RAG** (Retrieval-Augmented Generation, « génération augmentée par la recherche ») : l'assistant ne répond pas « de mémoire ». Il cherche d'abord les passages pertinents dans une base de documents, puis les donne au modèle d'IA pour qu'il réponde en les citant. La qualité des réponses dépend donc directement de la qualité des documents.
+
+Ce qui se passe quand on pose une question :
+
+1. **Reformuler** : Claude traduit la question dans le vocabulaire des fiches officielles (« combien de temps serai-je payé » devient « durée de versement de l'ARE »).
+2. **Chercher** : l'algorithme BM25 trouve les 5 morceaux de fiches les plus proches.
+3. **Répondre** : Claude reçoit ces 5 extraits et répond uniquement à partir d'eux, en citant [1], [2]…
+4. **Afficher** : la réponse, la liste des sources (titre, section, URL, date de vérification) et le coût de la question.
+
+## Lancer l'assistant
+
+Toutes les commandes se tapent dans le terminal, depuis le dossier du projet.
+
+```
+.venv/bin/python scripts/demander.py "J'ai 56 ans, combien de temps serai-je indemnisé ?"
+.venv/bin/python scripts/demander.py
+.venv/bin/python scripts/rechercher.py "contester une radiation"
+.venv/bin/python scripts/collecter_documents.py
+.venv/bin/python scripts/decouper.py
+.venv/bin/python scripts/generer_guide.py
+```
+
+Dans l'ordre : poser une question ; mode interactif (plusieurs questions, Entrée pour quitter) ; tester la recherche seule, sans IA ni coût ; re-télécharger les fiches ; refaire le découpage ; régénérer ce guide au format Word.
+
+## Étape 0 : collecter les documents
+
+### Web scraping (extraction de pages web)
+Télécharger le HTML d'une page, puis en extraire le contenu utile en retirant menus, boutons et pieds de page.
+- `urllib.request` (bibliothèque standard Python) télécharge la page.
+- `html.parser.HTMLParser` lit le HTML balise par balise : on réagit à chaque ouverture (`handle_starttag`), fermeture (`handle_endtag`) et morceau de texte (`handle_data`).
+
+→ Voir : [scripts/collecter_documents.py](scripts/collecter_documents.py)
+
+### Bibliothèque standard ou paquets externes
+Python est livré avec des modules prêts à l'emploi (`urllib`, `html`, `re`…). Pour la collecte, on a évité BeautifulSoup (un paquet externe) pour ne rien installer.
+
+### Expressions régulières (`re`)
+Un petit langage pour chercher des motifs dans du texte. Par exemple `r"chapitre(\d+)"` récupère le numéro d'un chapitre.
+
+→ Voir : [scripts/collecter_documents.py](scripts/collecter_documents.py)
+
+### Front matter
+Le bloc entre deux lignes `---` en haut d'un fichier Markdown. Il contient des métadonnées lisibles par un programme (titre, source, date de consultation), séparées du texte. C'est lui qui permet à l'assistant d'afficher la source d'un passage.
+
+→ Voir : l'en-tête de [documents/01-conditions-are.md](documents/01-conditions-are.md)
+
+### Titres Markdown
+`#`, `##`, `###`… marquent la hiérarchie des sections. Le découpage s'appuie dessus : il ne faut donc pas sauter de niveau (passer de ## à #####).
+
+→ Voir : `blocs_vers_markdown` dans [scripts/collecter_documents.py](scripts/collecter_documents.py)
+
+### Vérifier la fidélité
+Sur un sujet juridique, le texte doit être exactement celui de la page officielle. Un script compare chaque paragraphe produit au texte brut de la page : aucun mot ajouté ni modifié.
+
+## Étape 1 : découper en morceaux
+
+### Le découpage (« chunking »)
+On coupe chaque document à chaque titre : un morceau correspond à une section. Une section trop longue (plus de 300 mots) est coupée entre deux paragraphes. Les morceaux font environ 93 mots en médiane.
+
+→ Voir : [scripts/decouper.py](scripts/decouper.py), résultat dans `data/morceaux.jsonl`
+
+### Le fil de titres
+Chaque morceau garde la suite des titres qui le contiennent, par exemple « Vous avez 55 ou 56 ans > Quel est le montant de l'ARE ? ». Sans ce fil, un passage comme « 57 % du salaire » ne dit plus à qui il s'applique.
+
+### Les étiquettes
+Un titre de tableau (« Tableau - … ») ou un label « **À savoir** » n'a pas de sens seul. Le découpage les garde collés au bloc qui suit ; sinon un tableau peut arriver sans son titre, et le modèle ne sait plus à quoi il s'applique.
+
+→ Voir : `est_une_etiquette` dans [scripts/decouper.py](scripts/decouper.py)
+
+### JSON Lines (.jsonl)
+Un fichier texte où chaque ligne est un objet JSON complet. Pratique pour stocker une liste d'éléments qu'on relit ligne par ligne.
+
+→ Voir : `data/morceaux.jsonl`
+
+## Étape 2 : chercher les bons passages
+
+### BM25, la recherche par mots-clés
+L'algorithme classique des moteurs de recherche. Un morceau gagne des points pour chaque mot de la question qu'il contient, en tenant compte de trois choses :
+- **la rareté du mot (IDF)** : « démission » compte plus que « allocation », présent partout ;
+- **la saturation** : répéter un mot 10 fois ne rapporte pas 10 fois plus ;
+- **la longueur** : un long texte est un peu pénalisé, car il contient « par hasard » plus de mots.
+
+→ Voir : classe `IndexBM25` dans [scripts/rechercher.py](scripts/rechercher.py)
+
+### Normaliser les mots
+Avant de comparer, on met en minuscules, on retire les accents, on enlève les « mots vides » (le, de, vous…) et on ne garde que les 6 premières lettres (« troncature »), pour que « démissionne » et « démission » deviennent le même mot : `demiss`.
+
+→ Voir : fonction `mots` dans [scripts/rechercher.py](scripts/rechercher.py)
+
+### La limite : les synonymes
+« Combien de temps serai-je indemnisé ? » ne trouve pas « durée de versement », car aucun mot n'est commun. Deux solutions : la recherche **sémantique** (des « embeddings » comparent le sens des phrases) ou la **reformulation** de la question par le modèle. Le projet utilise la reformulation (étape 3).
+
+## Étape 3 : faire répondre Claude
+
+### Deux appels à l'API
+Pour chaque question, le script appelle Claude deux fois :
+1. **Reformulation de la requête** : traduire la question en vocabulaire officiel, pour aider BM25.
+2. **Réponse ancrée** : répondre à partir des 5 meilleurs extraits numérotés, en citant [1], [2]…
+
+→ Voir : [scripts/demander.py](scripts/demander.py)
+
+### Le prompt système (la consigne)
+Le paramètre `system` donne à Claude son rôle et ses règles, séparés de la question. Ici : ne jamais utiliser ses propres connaissances, citer chaque information, dire « je ne sais pas » plutôt que deviner, et signaler quand la réponse dépend d'une situation non précisée (âge, date de fin de contrat…).
+
+→ Voir : `CONSIGNE_REPONSE` dans [scripts/demander.py](scripts/demander.py)
+
+### Hallucination et ancrage
+Un modèle peut inventer une réponse plausible mais fausse : on dit qu'il « hallucine ». Le RAG réduit ce risque en ancrant la réponse dans des extraits, et les citations permettent de vérifier. Test fait : à la question « montant du RSA » (absent des documents), l'assistant répond qu'il ne trouve pas l'information au lieu d'inventer un chiffre.
+
+### Tokens et coût
+L'API facture au **token**, un morceau de mot (environ 3/4 de mot en français). Avec claude-opus-5-5 : 4 $ par million de tokens envoyés, 20 $ par million reçus. Une question coûte ici 3 à 5 centimes, surtout à cause des 5 extraits envoyés. `response.usage` donne les chiffres exacts.
+
+### L'effort
+`output_config={"effort": ...}` règle combien Claude réfléchit avant de répondre : `low` pour la reformulation (tâche simple), `medium` pour la réponse. Plus d'effort donne une meilleure qualité possible, mais c'est plus lent et plus cher.
+
+## Outils et environnement
+
+### Environnement virtuel (venv) et pip
+Un **venv** est un dossier (`.venv/`) qui contient une copie de Python et les paquets propres au projet, sans toucher au reste du Mac. Il utilise Python 3.15 (installé par Homebrew), car le Python du système (3.9) est trop ancien pour le paquet `anthropic`.
+- Installer un paquet : `.venv/bin/python -m pip install nom-du-paquet`
+- Lancer un script : `.venv/bin/python scripts/…`
+- Ou bien `source .venv/bin/activate`, pour que `python` désigne ce Python-là dans le terminal courant.
+
+### requirements.txt
+La liste des paquets du projet, avec leur version exacte (`anthropic==2.10.0`). Elle permet de tout réinstaller à l'identique : `.venv/bin/python -m pip install -r requirements.txt`.
+
+→ Voir : [requirements.txt](requirements.txt)
+
+### Clé API, fichier .env et variables d'environnement
+Une **clé API** est un mot de passe qui identifie ton compte (et ta facture) auprès d'Anthropic. Elle ne doit jamais être écrite dans le code ni publiée.
+- Elle est rangée dans `.env` (une ligne `ANTHROPIC_API_KEY=…`), un fichier lisible par ton seul compte.
+- Au démarrage, `charger_env()` copie cette ligne dans les **variables d'environnement** du programme ; le paquet `anthropic` y lit la clé tout seul.
+- `.gitignore` liste les fichiers à ne jamais publier (`.env`, `.venv/`).
+- Sur macOS, un fichier dont le nom commence par un point est caché dans le Finder (Cmd+Maj+point pour l'afficher).
+
+→ Voir : [scripts/config.py](scripts/config.py), [.gitignore](.gitignore)
+
+### Git : l'historique du projet
+**Git** enregistre l'historique des fichiers du projet. Un **commit** est une photo de l'état des fichiers à un instant, avec un message qui dit ce qui a changé. On peut revenir à n'importe quelle photo.
+- `git init` : transforme le dossier en dépôt Git (crée le dossier caché `.git/`).
+- `git add` : choisit les fichiers à mettre dans la prochaine photo.
+- `git status` : montre ce qui a changé et ce qui sera enregistré.
+- `git commit -m "message"` : prend la photo.
+- `git push` : envoie l'historique vers un serveur, comme **GitHub**, qui l'héberge en ligne et le rend visible (par exemple pour un recruteur).
+
+### .gitignore et .env.example
+`.gitignore` liste ce que Git doit ignorer : les secrets (`.env`), l'environnement Python (`.venv/`), les fichiers générés (`data/`, le guide Word) et ceux du système (`.DS_Store`). `.env.example` montre le **nom** de la variable attendue sans sa valeur : quelqu'un qui récupère le projet sait quoi créer, sans jamais voir ta clé.
+
+Avant chaque publication, deux vérifications :
+- `git check-ignore -v .env` doit répondre que `.env` est ignoré ;
+- `git grep --cached -E "sk-ant-[A-Za-z0-9_-]{20,}"` ne doit rien trouver : les clés Anthropic commencent par ce préfixe, suivi d'une longue suite de caractères. (Chercher le seul préfixe trouverait aussi ce guide, qui en parle.)
+
+Pourquoi c'est important : une clé publiée sur GitHub est repérée par des robots en quelques minutes, et quelqu'un peut alors dépenser ton crédit.
+
+→ Voir : [.gitignore](.gitignore), [.env.example](.env.example)
+
+### Générer ce guide en Word
+Ce guide est écrit en Markdown (`NOTIONS.md`), puis converti en fichier Word par un script qui utilise le paquet `python-docx`. Il suffit de le relancer après chaque mise à jour.
+
+→ Voir : [scripts/generer_guide.py](scripts/generer_guide.py)
+
+## Pièges rencontrés
+
+- **Changement d'adresse du site** : service-public.fr redirige vers service-public.gouv.fr ; on enregistre l'adresse finale.
+- **Onglets et accordéons** : tout le texte est présent dans le HTML, simplement masqué ; on peut donc récupérer tous les onglets.
+- **Texte d'interface caché** : les infobulles contiennent un texte fictif (« : titleContent ») rempli par JavaScript ; il faut les ignorer.
+- **HTML mal fermé** : certaines cellules de tableau ne sont pas fermées ; le script remonte la pile des balises pour rester cohérent.
+- **Réglementation qui change** : il existe des fiches « avant » et « après le 1er avril 2025 » ; il faut prendre celle en vigueur (F38881) et non l'ancienne (F14860).
+- **Règles datées dans une même page** : certaines fiches ont des onglets « Avant / Depuis le 1er juin 2025 ». Le fil de titres de chaque morceau garde cette date, pour que l'assistant ne cite pas une règle périmée.
+- **Un tableau séparé de son titre** : la coupure à 300 mots tombait parfois entre les deux ; corrigé grâce aux étiquettes (étape 1).

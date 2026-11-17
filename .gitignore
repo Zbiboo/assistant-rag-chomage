@@ -1,0 +1,20 @@
+# Fichiers à ne jamais publier (ex. sur GitHub)
+
+# Secrets : la clé API ne doit JAMAIS être versionnée
+.env
+.env.*
+!.env.example
+
+# Environnement Python et caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Fichiers générés (se refont avec les scripts)
+data/
+guide-projet.docx
+
+# Fichiers du système et de l'éditeur
+.DS_Store
+.vscode/
