@@ -11,8 +11,8 @@ Ce guide explique, étape par étape, comment est construit l'assistant qui rép
 | 2. Chercher | Retrouver les morceaux pertinents pour une question (BM25, codé à la main) | Terminé |
 | 3. Répondre | Claude reformule la question, puis répond à partir des morceaux en citant ses sources | Terminé |
 | 4. Publier le code | Dépôt Git sécurisé (clé jamais versionnée), puis GitHub | Terminé |
-| 5. Réduire les coûts | Modèles moins chers configurables, limites de taille, coût affiché | Prochaine étape |
-| 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | À faire |
+| 5. Réduire les coûts | Modèles moins chers configurables, limites de taille, coût affiché | Terminé |
+| 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | Prochaine étape |
 | 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | À faire |
 | 8. Mettre en ligne | Hébergement sur Hugging Face Spaces, testable par un lien | À faire |
 | 9. Présenter | README du dépôt, texte de présentation | À faire |
@@ -131,10 +131,40 @@ Le paramètre `system` donne à Claude son rôle et ses règles, séparés de la
 Un modèle peut inventer une réponse plausible mais fausse : on dit qu'il « hallucine ». Le RAG réduit ce risque en ancrant la réponse dans des extraits, et les citations permettent de vérifier. Test fait : à la question « montant du RSA » (absent des documents), l'assistant répond qu'il ne trouve pas l'information au lieu d'inventer un chiffre.
 
 ### Tokens et coût
-L'API facture au **token**, un morceau de mot (environ 3/4 de mot en français). Avec claude-opus-5-5 : 4 $ par million de tokens envoyés, 20 $ par million reçus. Une question coûte ici 3 à 5 centimes, surtout à cause des 5 extraits envoyés. `response.usage` donne les chiffres exacts.
+L'API facture au **token**, un morceau de mot (environ 3/4 de mot en français). Une question envoie environ 4 000 tokens (surtout les 5 extraits) et en reçoit 1 000 à 1 500, réflexion du modèle comprise. Le coût exact dépend du modèle (voir plus bas). `response.usage` donne les chiffres exacts.
 
 ### L'effort
-`output_config={"effort": ...}` règle combien Claude réfléchit avant de répondre : `low` pour la reformulation (tâche simple), `medium` pour la réponse. Plus d'effort donne une meilleure qualité possible, mais c'est plus lent et plus cher.
+`output_config={"effort": ...}` règle combien Claude réfléchit avant de répondre : `low` pour la reformulation (tâche simple), `medium` pour la réponse (réglable dans config.py). Plus d'effort donne une meilleure qualité possible, mais c'est plus lent et plus cher.
+
+### Choisir le modèle selon le coût
+Anthropic propose plusieurs tailles de modèles. Prix vérifiés le 17/11/2026 dans la documentation officielle, en dollars par million de tokens (entrée / sortie) :
+
+| Modèle | Identifiant | Prix |
+|---|---|---|
+| Haiku 5.5 | claude-haiku-5-5 | 0,10 / 0,50 |
+| Sonnet 5.5 | claude-sonnet-5-5 | 2 / 10 |
+| Opus 5.5 | claude-opus-5-5 | 4 / 20 |
+
+Avec Haiku pour les deux appels, une question coûte environ 0,001 $ (près de 900 questions pour 1 $), contre 0,04 $ avec Opus : 34 fois moins cher. La qualité sera mesurée à l'étape « Évaluer ».
+
+### La configuration (config.py)
+Tous les réglages sont regroupés dans un seul fichier : modèles, effort, limites, prix. Chaque réglage peut être changé sans toucher au code, avec une variable d'environnement du même nom :
+
+```
+MODELE_REPONSE=claude-sonnet-5-5 .venv/bin/python scripts/demander.py "ma question"
+```
+
+→ Voir : [scripts/config.py](scripts/config.py)
+
+### Limiter les coûts et les abus
+- **max_tokens** plafonne la longueur de ce que produit le modèle, réflexion comprise : 1 000 tokens pour la reformulation, 2 500 pour la réponse. Si la limite est atteinte, la réponse le signale.
+- **Longueur maximale d'une question** : 500 caractères. Au-delà, la question est refusée avant tout appel payant.
+- **Limite de dépense mensuelle** : à régler dans la console Anthropic. C'est le filet de sécurité ultime, même en cas de bug.
+
+### Séparer le moteur de l'affichage
+`demander.py` contient d'un côté le **moteur** (la classe `Assistant`, qui renvoie la réponse, les extraits et les coûts sans rien afficher), de l'autre l'**affichage** en ligne de commande. L'évaluation et la page web réutilisent le même moteur : le code n'est écrit qu'une fois.
+
+→ Voir : classe `Assistant` dans [scripts/demander.py](scripts/demander.py)
 
 ## Outils et environnement
 

@@ -10,20 +10,19 @@ Déroulé pour chaque question :
   2. CHERCHER   : BM25 retrouve les morceaux les plus pertinents (étape 2).
   3. RÉPONDRE   : Claude reçoit ces morceaux et doit répondre UNIQUEMENT à
      partir d'eux, en citant ses sources [1], [2]…
+
+Le fichier est en deux parties :
+- le MOTEUR (classe Assistant) : renvoie un résultat sans rien afficher ;
+  il est réutilisé par l'évaluation et par la page web ;
+- l'AFFICHAGE en ligne de commande (fonctions afficher et main).
 """
 
 import sys
 
 import anthropic
 
-from config import charger_env
+import config
 from rechercher import charger_index
-
-MODELE = "claude-opus-5-5"
-NB_EXTRAITS = 5
-# Prix de claude-opus-5-5 en dollars par million de tokens (entrée / sortie).
-PRIX_ENTREE = 4.00 / 1_000_000
-PRIX_SORTIE = 20.00 / 1_000_000
 
 # --- Les consignes (« prompts ») ---------------------------------------------
 
@@ -58,93 +57,152 @@ secteur privé ou agent public…). Si la question ne précise pas un élément 
 change la réponse, donne les différents cas présents dans les extraits, ou \
 signale l'information qui manque.
 5. Réponds en français, simplement et brièvement, pour une personne qui n'est \
-pas juriste."""
+pas juriste.
+6. Ne termine pas par une liste des sources : elle est affichée automatiquement \
+sous ta réponse. Les citations [1], [2]… dans le texte suffisent."""
 
 
-def texte_de(reponse):
-    """Rassemble les blocs de texte d'une réponse de l'API."""
-    return "".join(b.text for b in reponse.content if b.type == "text").strip()
+class QuestionTropLongue(ValueError):
+    pass
 
 
-def appeler(client, consigne, message, effort):
-    """Un appel à Claude. Renvoie (texte, usage).
+# --- Le moteur ---------------------------------------------------------------
 
-    `fallbacks="default"` : si le modèle refusait de répondre (filtre de
-    sécurité), l'API relancerait automatiquement la demande sur un autre modèle.
-    """
-    reponse = client.beta.messages.create(
-        model=MODELE,
-        max_tokens=16000,
-        system=consigne,
-        messages=[{"role": "user", "content": message}],
-        output_config={"effort": effort},
-        betas=["server-side-fallback-2026-07-01"],
-        fallbacks="default",
-    )
-    if reponse.stop_reason == "refusal":
-        return "(Le modèle a refusé de répondre à cette question.)", reponse.usage
-    return texte_de(reponse), reponse.usage
+class Assistant:
+    def __init__(self):
+        self.client = anthropic.Anthropic()  # lit ANTHROPIC_API_KEY dans l'environnement
+        self.index = charger_index()
 
-
-def formater_extraits(resultats):
-    """Présente les morceaux trouvés à Claude, chacun avec son numéro."""
-    blocs = []
-    for n, (_, m) in enumerate(resultats, 1):
-        section = " > ".join(m["fil"]) or "(introduction)"
-        blocs.append(
-            f'<extrait numero="{n}">\n'
-            f"Page : {m['titre_page']}\n"
-            f"Section : {section}\n\n"
-            f"{m['texte']}\n"
-            f"</extrait>"
+    def appeler(self, modele, consigne, message, effort, max_tokens):
+        """Un appel à Claude. Renvoie un dict : texte, modèle, tokens, coût."""
+        parametres = dict(
+            model=modele,
+            max_tokens=max_tokens,
+            system=consigne,
+            messages=[{"role": "user", "content": message}],
+            output_config={"effort": effort},
         )
-    return "\n\n".join(blocs)
+        if modele in config.MODELES_AVEC_REPLI:
+            # Repli automatique sur un autre modèle en cas de refus (voir config.py).
+            reponse = self.client.beta.messages.create(
+                **parametres, betas=["server-side-fallback-2026-07-01"], fallbacks="default"
+            )
+        else:
+            reponse = self.client.messages.create(**parametres)
+
+        if reponse.stop_reason == "refusal":
+            texte = "(Le modèle a refusé de répondre à cette question.)"
+        else:
+            texte = "".join(b.text for b in reponse.content if b.type == "text").strip()
+            if reponse.stop_reason == "max_tokens":
+                texte += "\n\n(Réponse coupée : limite de longueur atteinte.)"
+        entree, sortie = reponse.usage.input_tokens, reponse.usage.output_tokens
+        return {
+            "texte": texte,
+            "modele": modele,
+            "tokens_entree": entree,
+            "tokens_sortie": sortie,  # inclut les tokens de réflexion du modèle
+            "cout": config.cout_en_dollars(modele, entree, sortie),
+        }
+
+    def chercher(self, question, mots_cles=""):
+        return self.index.chercher(f"{question} {mots_cles}", n=config.NB_EXTRAITS)
+
+    def repondre(self, question):
+        """Pose une question. Renvoie un dict avec la réponse, les extraits et les coûts."""
+        question = question.strip()
+        if len(question) > config.LONGUEUR_MAX_QUESTION:
+            raise QuestionTropLongue(
+                f"La question fait {len(question)} caractères "
+                f"(maximum : {config.LONGUEUR_MAX_QUESTION})."
+            )
+
+        # 1. Reformuler
+        reformulation = self.appeler(
+            config.MODELE_REFORMULATION, CONSIGNE_REFORMULATION, question,
+            config.EFFORT_REFORMULATION, config.MAX_TOKENS_REFORMULATION,
+        )
+        # 2. Chercher (sur la question d'origine + les mots-clés officiels)
+        extraits = [m for _, m in self.chercher(question, reformulation["texte"])]
+        appels = [reformulation]
+
+        # 3. Répondre
+        if extraits:
+            message = (
+                f"Extraits des fiches officielles :\n\n{formater_extraits(extraits)}\n\n"
+                f"Question : {question}"
+            )
+            generation = self.appeler(
+                config.MODELE_REPONSE, CONSIGNE_REPONSE, message,
+                config.EFFORT_REPONSE, config.MAX_TOKENS_REPONSE,
+            )
+            appels.append(generation)
+            texte = generation["texte"]
+        else:
+            texte = "Je n'ai trouvé aucun passage sur ce sujet dans les fiches officielles."
+
+        couts = [a["cout"] for a in appels]
+        return {
+            "question": question,
+            "mots_cles": reformulation["texte"],
+            "reponse": texte,
+            "extraits": extraits,
+            "appels": appels,
+            "cout_total": None if None in couts else sum(couts),
+        }
 
 
-def repondre(client, index, question):
-    # 1. Reformuler
-    mots_cles, usage1 = appeler(client, CONSIGNE_REFORMULATION, question, effort="low")
-    print(f"\n🔎 Recherche : {mots_cles}")
+def section_de(morceau):
+    return " > ".join(morceau["fil"]) or "(introduction)"
 
-    # 2. Chercher (sur la question d'origine + les mots-clés officiels)
-    resultats = index.chercher(question + " " + mots_cles, n=NB_EXTRAITS)
-    if not resultats:
-        print("Aucun passage trouvé dans les documents.")
-        return
 
-    # 3. Répondre
-    message = (
-        f"Extraits des fiches officielles :\n\n{formater_extraits(resultats)}\n\n"
-        f"Question : {question}"
+def formater_extraits(extraits):
+    """Présente les morceaux trouvés à Claude, chacun avec son numéro."""
+    return "\n\n".join(
+        f'<extrait numero="{n}">\n'
+        f"Page : {m['titre_page']}\n"
+        f"Section : {section_de(m)}\n\n"
+        f"{m['texte']}\n"
+        f"</extrait>"
+        for n, m in enumerate(extraits, 1)
     )
-    reponse, usage2 = appeler(client, CONSIGNE_REPONSE, message, effort="medium")
 
-    print(f"\n💬 Réponse :\n\n{reponse}\n")
+
+# --- L'affichage en ligne de commande -------------------------------------------
+
+def afficher(resultat):
+    print(f"\n🔎 Recherche : {resultat['mots_cles']}")
+    print(f"\n💬 Réponse :\n\n{resultat['reponse']}\n")
     print("📚 Sources :")
-    for n, (_, m) in enumerate(resultats, 1):
-        section = " > ".join(m["fil"]) or "(introduction)"
+    for n, m in enumerate(resultat["extraits"], 1):
         print(f"  [{n}] {m['titre_page']}")
-        print(f"      Section : {section}")
+        print(f"      Section : {section_de(m)}")
         print(f"      {m['source']} (vérifié le {m['verifie_le']})")
 
-    entree = usage1.input_tokens + usage2.input_tokens
-    sortie = usage1.output_tokens + usage2.output_tokens
-    cout = entree * PRIX_ENTREE + sortie * PRIX_SORTIE
-    print(f"\n💶 Coût : {entree} tokens en entrée, {sortie} en sortie ≈ {cout:.4f} $\n")
+    print("\n💶 Consommation :")
+    for etape, a in zip(("reformulation", "réponse"), resultat["appels"]):
+        cout = f"{a['cout']:.5f} $" if a["cout"] is not None else "prix inconnu"
+        print(f"  {etape:<14} {a['modele']:<18} {a['tokens_entree']:>5} tokens entrée, "
+              f"{a['tokens_sortie']:>5} sortie  ≈ {cout}")
+    if resultat["cout_total"] is not None:
+        total = resultat["cout_total"]
+        print(f"  {'total':<14} {'':<18} ≈ {total:.5f} $ (≈ {1 / total:.0f} questions pour 1 $)\n")
 
 
 def main():
-    charger_env()
-    client = anthropic.Anthropic()  # lit ANTHROPIC_API_KEY dans l'environnement
-    index = charger_index()
-
+    assistant = Assistant()
     question = " ".join(sys.argv[1:])
-    if question:
-        repondre(client, index, question)
-        return
-    print("Posez votre question (ou appuyez sur Entrée pour quitter).")
-    while question := input("\n❓ ").strip():
-        repondre(client, index, question)
+    questions = [question] if question else None
+    if not questions:
+        print("Posez votre question (ou appuyez sur Entrée pour quitter).")
+    while True:
+        q = questions.pop() if questions else (None if question else input("\n❓ ").strip())
+        if not q:
+            break
+        try:
+            afficher(assistant.repondre(q))
+        except QuestionTropLongue as e:
+            print(f"⚠️  {e} Merci de la raccourcir.")
 
 
 if __name__ == "__main__":
