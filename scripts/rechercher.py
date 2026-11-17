@@ -18,7 +18,7 @@ import math
 import re
 import sys
 import unicodedata
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
@@ -74,6 +74,10 @@ class IndexBM25:
         n = len(morceaux)
         # IDF = « rareté » d'un mot : grand si le mot est dans peu de morceaux.
         self.idf = {mot: math.log(1 + (n - df + 0.5) / (df + 0.5)) for mot, df in presence.items()}
+        # Pour chaque texte, la liste des morceaux qui ont exactement ce texte.
+        self.jumeaux = defaultdict(list)
+        for i, m in enumerate(morceaux):
+            self.jumeaux[m["texte"]].append(i)
 
     def score(self, i, mots_question):
         total = 0.0
@@ -86,10 +90,34 @@ class IndexBM25:
         return total
 
     def chercher(self, question, n=5):
+        """Les n meilleurs morceaux, SANS doublons.
+
+        Les fiches répètent souvent le même texte (une fois par tranche d'âge,
+        une fois pour le privé et une fois pour le public) : 63 % des morceaux
+        ont un jumeau. Sans précaution, 3 des 5 places peuvent être prises par
+        le même passage. On ne garde donc qu'un exemplaire de chaque texte, mais
+        on note dans « autres_sections » toutes les sections où ce même texte
+        apparaît : le modèle sait ainsi que la règle vaut pour plusieurs cas
+        (par exemple pour tous les âges), et pas seulement pour le premier.
+        """
         q = mots(question)
         scores = [(self.score(i, q), i) for i in range(len(self.morceaux))]
         scores.sort(reverse=True)
-        return [(s, self.morceaux[i]) for s, i in scores[:n] if s > 0]
+        resultats, textes_vus = [], set()
+        for s, i in scores:
+            if s <= 0 or len(resultats) == n:
+                break
+            m = self.morceaux[i]
+            if m["texte"] in textes_vus:
+                continue  # jumeau d'un morceau déjà retenu
+            textes_vus.add(m["texte"])
+            jumeaux = [self.morceaux[j] for j in self.jumeaux[m["texte"]] if j != i]
+            # copie du morceau (on ne modifie pas l'index) enrichie de ses jumeaux
+            resultats.append((s, dict(m, autres_sections=[
+                {"titre_page": j["titre_page"], "fil": j["fil"], "source": j["source"]}
+                for j in jumeaux
+            ])))
+        return resultats
 
 
 def charger_index():
@@ -106,6 +134,8 @@ def main():
     for rang, (score, m) in enumerate(index.chercher(question), 1):
         print(f"{rang}. [score {score:.1f}] {m['id']}")
         print(f"   {' > '.join(m['fil']) or m['titre_page']}")
+        if m["autres_sections"]:
+            print(f"   (texte identique dans {len(m['autres_sections'])} autre(s) section(s))")
         print(f"   {m['texte'][:160].replace(chr(10), ' ')}…\n")
 
 

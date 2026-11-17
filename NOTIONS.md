@@ -110,6 +110,32 @@ Avant de comparer, on met en minuscules, on retire les accents, on enlève les �
 
 → Voir : fonction `mots` dans [scripts/rechercher.py](scripts/rechercher.py)
 
+### La limite de la troncature
+Couper à 6 lettres est une méthode « aveugle » : elle ne connaît pas la grammaire. Elle fait deux types d'erreurs, vérifiées sur notre fonction `mots` :
+- **Elle confond des mots différents** : « formation », « format » et « formateur » deviennent tous `format`. De même, « prestation » et « prestataire » deviennent `presta`. Une question sur un « format de document » remonterait des passages sur la formation.
+- **Elle sépare des mots de même famille** : « droit » et « droits » restent différents (mots trop courts pour être coupés), comme « radiation » (`radiat`) et « radié » (`radie`), ou « salarié » (`salari`) et « salaire » (`salair`).
+
+**La solution standard est un « stemmer »** (racinisateur), par exemple **Snowball**, le plus utilisé pour le français. Au lieu de couper à une longueur fixe, il retire les terminaisons connues de la langue (pluriels, -ation, -ement, -ité…) selon des règles. Il traite donc mieux les pluriels et les mots de même famille. Aucun outil n'est parfait : un stemmer peut lui aussi rapprocher deux mots de sens différents. Il faudrait le comparer à la troncature avec notre évaluation. Il s'installe avec un petit paquet Python (`snowballstemmer`) ; on ne l'a pas fait pour garder zéro dépendance à cette étape.
+
+### Les réglages de BM25 : k1 et b
+BM25 a deux réglages. On utilise les valeurs classiques des ouvrages de référence :
+- **k1 = 1,5** règle la **saturation**, c'est-à-dire l'effet d'un mot répété. Avec k1 = 0, être présent une fois ou dix fois revient au même. Plus k1 est grand, plus la répétition compte. Les valeurs habituelles vont de 1,2 à 2 (Elasticsearch utilise 1,2 par défaut).
+- **b = 0,75** règle la **pénalité de longueur**. Avec b = 0, la longueur d'un morceau ne compte pas ; avec b = 1, la pénalité est maximale. 0,75 est la valeur standard, la même qu'Elasticsearch.
+
+Ces valeurs n'ont pas été ajustées pour notre corpus. On pourrait les tester avec l'évaluation (`--recherche-seule`, qui ne coûte presque rien).
+
+→ Voir : `K1` et `B` en haut de [scripts/rechercher.py](scripts/rechercher.py)
+
+### Pourquoi 5 extraits, 300 mots, 6 lettres ?
+Ces trois chiffres sont des **choix raisonnables faits à la main au début du projet, pas des valeurs mesurées**. Voici le raisonnement :
+- **5 extraits** : c'est un compromis. Trop peu, et on risque de rater l'information. Trop, et on paie plus de tokens (5 extraits font déjà environ 3 000 à 4 000 tokens envoyés) et on noie le modèle sous des passages hors sujet. L'évaluation a montré que les doublons gaspillent ces places : les dédoublonner serait plus utile qu'en ajouter.
+- **300 mots maximum par morceau** : la plupart des sections sont plus courtes (93 mots en médiane), donc la limite ne coupe que 24 sections sur 274. Elle évite d'envoyer un très long morceau dont seule une phrase est utile.
+- **6 lettres** : testé à la main sur « démissionne » et « démission » (les deux donnent `demiss`). Assez long pour garder le sens de la plupart des mots, assez court pour rapprocher les terminaisons. Voir ses limites plus haut.
+
+Avec l'évaluation, on peut maintenant comparer d'autres valeurs (3 ou 8 extraits, 5 ou 7 lettres…) au lieu de deviner.
+
+→ Voir : `NB_EXTRAITS` dans [scripts/config.py](scripts/config.py), `MOTS_MAX` dans [scripts/decouper.py](scripts/decouper.py), `LETTRES_GARDEES` dans [scripts/rechercher.py](scripts/rechercher.py)
+
 ### La limite : les synonymes
 « Combien de temps serai-je indemnisé ? » ne trouve pas « durée de versement », car aucun mot n'est commun. Deux solutions : la recherche **sémantique** (des « embeddings » comparent le sens des phrases) ou la **reformulation** de la question par le modèle. Le projet utilise la reformulation (étape 3).
 
@@ -121,6 +147,15 @@ Pour chaque question, le script appelle Claude deux fois :
 2. **Réponse ancrée** : répondre à partir des 5 meilleurs extraits numérotés, en citant [1], [2]…
 
 → Voir : [scripts/demander.py](scripts/demander.py)
+
+### La recherche utilise la question d'origine ET la reformulation
+BM25 cherche avec la question telle qu'elle a été posée, **suivie** des mots-clés de la reformulation : `chercher(f"{question} {mots_cles}")`.
+
+**Le risque si on cherchait avec la reformulation seule** : tout reposerait sur le modèle. S'il oublie un détail de la question (l'âge « 56 ans », « agent public »…) ou s'il la comprend de travers, la recherche part dans la mauvaise direction, et on ne peut plus rattraper l'erreur. Garder la question d'origine assure un filet de sécurité : ses mots comptent toujours.
+
+**Un effet à connaître** : un mot présent dans la question ET dans les mots-clés compte **double** dans le score. La fonction `score` parcourt tous les mots de la requête, répétitions comprises. C'est plutôt utile, car ce mot est confirmé deux fois. Mais une reformulation trop longue a l'effet inverse : beaucoup de mots-clés secondaires diluent la question. C'est ce qui a fait échouer la question sur le montant dans l'évaluation (13 mots-clés, dont « revenus d'activité », qui a attiré la fiche sur le cumul).
+
+→ Voir : méthode `chercher` dans [scripts/demander.py](scripts/demander.py), méthode `score` dans [scripts/rechercher.py](scripts/rechercher.py)
 
 ### Le prompt système (la consigne)
 Le paramètre `system` donne à Claude son rôle et ses règles, séparés de la question. Ici : ne jamais utiliser ses propres connaissances, citer chaque information, dire « je ne sais pas » plutôt que deviner, et signaler quand la réponse dépend d'une situation non précisée (âge, date de fin de contrat…).
@@ -191,8 +226,22 @@ Le modèle ne répond pas exactement pareil à chaque fois : la reformulation, d
 ### Le résultat : Haiku suffit
 Haiku et Sonnet obtiennent la même qualité sur ce jeu de questions, mais Haiku coûte 13 fois moins cher (≈ 0,0009 $ contre 0,012 $ par question). Les erreurs restantes viennent de la recherche, pas du modèle : un modèle plus cher n'y changerait rien.
 
-### Les doublons
-63 % des morceaux ont un texte identique à un autre, car les fiches répètent le même texte pour chaque tranche d'âge et pour le privé comme le public. Ils occupent plusieurs des 5 places d'extraits. Correction simple à faire : dédoublonner les résultats. Les embeddings ne sont pas justifiés à ce stade.
+### Les doublons, et leur correction
+63 % des morceaux ont un texte identique à un autre, car les fiches répètent le même texte pour chaque tranche d'âge et pour le privé comme le public. Ils occupaient plusieurs des 5 places d'extraits.
+
+**Correction (18/11/2026) : fusionner plutôt que supprimer.** La recherche ne garde qu'un exemplaire de chaque texte, mais l'extrait retenu liste toutes les sections où il apparaît. Supprimer simplement les copies aurait été dangereux : le modèle aurait cru qu'une règle ne vaut que pour « moins de 55 ans » alors qu'elle vaut pour tous les âges.
+
+**Résultat mesuré : gain modeste.** Les réponses passent de 34 à 35 éléments clés sur 39, et le nombre de questions complètes ne change pas (10/13). La cause restante est une reformulation trop longue, qui dilue la recherche. Les embeddings ne sont toujours pas justifiés.
+
+→ Voir : méthode `chercher` dans [scripts/rechercher.py](scripts/rechercher.py), `formater_extraits` dans [scripts/demander.py](scripts/demander.py)
+
+### Comparer « avant / après » avec le même instrument
+Pour savoir si une modification aide, il faut mesurer avant et après avec **le même contrôle**. Ici, le contrôle avait été amélioré entre-temps (mots entiers, variante trop vague retirée). On a donc renoté l'ancienne exécution avec le nouveau contrôle, sans repayer, grâce aux réponses gardées dans Git. Sinon, on aurait comparé des chiffres mesurés différemment.
+
+### Faux positifs
+L'inverse des faux négatifs : le contrôle compte « trouvé » un élément qui ne devrait pas l'être. Deux cas rencontrés :
+- un mot court trouvé à l'intérieur d'un autre (« are » dans « déclarer »), corrigé en cherchant des mots entiers ;
+- un élément cité dans une phrase négative (« les extraits ne parlent pas de l'allocation chômage »). Ce cas reste une limite du contrôle automatique : d'où l'importance de lire les réponses.
 
 ## Outils et environnement
 

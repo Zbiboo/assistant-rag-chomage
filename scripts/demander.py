@@ -163,15 +163,20 @@ def section_de(morceau):
 
 
 def formater_extraits(extraits):
-    """Présente les morceaux trouvés à Claude, chacun avec son numéro."""
-    return "\n\n".join(
-        f'<extrait numero="{n}">\n'
-        f"Page : {m['titre_page']}\n"
-        f"Section : {section_de(m)}\n\n"
-        f"{m['texte']}\n"
-        f"</extrait>"
-        for n, m in enumerate(extraits, 1)
-    )
+    """Présente les morceaux trouvés à Claude, chacun avec son numéro.
+
+    Si le même texte figure dans plusieurs sections (plusieurs âges, privé et
+    public…), on les liste toutes : le modèle sait ainsi à qui la règle s'applique.
+    """
+    blocs = []
+    for n, m in enumerate(extraits, 1):
+        entete = f"Page : {m['titre_page']}\nSection : {section_de(m)}"
+        autres = m.get("autres_sections", [])
+        if autres:
+            entete += "\nCe même texte figure aussi dans :" + "".join(
+                f"\n- {a['titre_page']} > {section_de(a)}" for a in autres)
+        blocs.append(f'<extrait numero="{n}">\n{entete}\n\n{m["texte"]}\n</extrait>')
+    return "\n\n".join(blocs)
 
 
 # --- L'affichage en ligne de commande -------------------------------------------
@@ -183,6 +188,8 @@ def afficher(resultat):
     for n, m in enumerate(resultat["extraits"], 1):
         print(f"  [{n}] {m['titre_page']}")
         print(f"      Section : {section_de(m)}")
+        if m.get("autres_sections"):
+            print(f"      (texte identique dans {len(m['autres_sections'])} autre(s) section(s))")
         print(f"      {m['source']} (vérifié le {m['verifie_le']})")
 
     print("\n💶 Consommation :")

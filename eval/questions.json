@@ -38,7 +38,7 @@
     "id": "q06",
     "question": "Si je signe une rupture conventionnelle, aurai-je droit au chômage, et puis-je encore changer d'avis après la signature ?",
     "fichiers_attendus": ["06-rupture-conventionnelle.md"],
-    "elements_cles": [["are", "allocation d'aide au retour a l'emploi", "allocation chomage"], ["15 jours"]],
+    "elements_cles": [["are", "allocation d'aide au retour a l'emploi"], ["15 jours"]],
     "source_elements": "06 : « peut bénéficier de l'allocation d'aide au retour à l'emploi (ARE) » ; « droit de rétractation… de 15 jours calendaires »"
   },
   {
@@ -87,7 +87,7 @@
     "id": "q13",
     "question": "Qu'est-ce que je risque si je ne vais pas à un rendez-vous France Travail sans raison valable ?",
     "fichiers_attendus": ["13-radiation-france-travail.md", "14-suppression-allocations.md"],
-    "elements_cles": [["radi"], ["30 %"], ["2 mois"]],
+    "elements_cles": [["radiation", "radie", "radiee", "radier"], ["30 %"], ["2 mois"]],
     "source_elements": "14 (depuis le 1er juin 2025) : motif de radiation « Absence à un rendez-vous… » ; « suspension… d'au moins 30 % pendant une durée d'un à 2 mois »"
   },
   {

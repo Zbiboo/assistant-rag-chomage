@@ -59,10 +59,20 @@ def normaliser(texte):
     return " ".join(texte.split())
 
 
+def contient(texte, expression):
+    """Vrai si `expression` apparaît en mots entiers (« are » n'est pas trouvé dans « declarer »)."""
+    return re.search(r"(?<!\w)" + re.escape(expression) + r"(?!\w)", texte) is not None
+
+
 def elements_trouves(reponse, elements_cles):
-    """Pour chaque élément (liste d'alternatives), True si l'une est dans la réponse."""
+    """Pour chaque élément (liste d'alternatives), True si l'une est dans la réponse.
+
+    Limite connue : on ne sait pas si l'élément est affirmé ou nié (« les extraits
+    ne parlent pas de l'allocation chômage » contient « allocation chomage »).
+    D'où l'intérêt de lire les réponses en cas de doute.
+    """
     r = normaliser(reponse)
-    return [any(normaliser(alt) in r for alt in alternatives) for alternatives in elements_cles]
+    return [any(contient(r, normaliser(alt)) for alt in alternatives) for alternatives in elements_cles]
 
 
 def citations(reponse):
@@ -269,7 +279,12 @@ def ecrire_rapport(resultats, modeles):
               f"avec {sum(r['infos_avec'])}/{len(r['infos_avec'])}",
               f"- Sans reformulation : {', '.join(r['fichiers_sans'])}",
               f"- Avec reformulation (mots-clés : {r['mots_cles']}) : {', '.join(r['fichiers_avec'])}", ""]
-    (DOSSIER / "resultats.md").write_text("\n".join(L) + "\n", encoding="utf-8")
+    # La section « ## Analyse… » est écrite à la main : on la conserve telle quelle.
+    fichier = DOSSIER / "resultats.md"
+    ancien = fichier.read_text(encoding="utf-8") if fichier.exists() else ""
+    debut_analyse = ancien.find("\n## Analyse")
+    analyse = ancien[debut_analyse:] if debut_analyse != -1 else ""
+    fichier.write_text("\n".join(L) + "\n" + analyse, encoding="utf-8")
 
 
 if __name__ == "__main__":
