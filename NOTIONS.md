@@ -26,8 +26,8 @@ Le principe du **RAG** (Retrieval-Augmented Generation, « génération augment�
 Ce qui se passe quand on pose une question :
 
 1. **Reformuler** : Claude traduit la question dans le vocabulaire des fiches officielles (« combien de temps serai-je payé » devient « durée de versement de l'ARE »).
-2. **Chercher** : l'algorithme BM25 trouve les 5 morceaux de fiches les plus proches.
-3. **Répondre** : Claude reçoit ces 5 extraits et répond uniquement à partir d'eux, en citant [1], [2]…
+2. **Chercher** : l'algorithme BM25 trouve les 8 morceaux de fiches les plus proches (sans doublons).
+3. **Répondre** : Claude reçoit ces 8 extraits et répond uniquement à partir d'eux, en citant [1], [2]…
 4. **Afficher** : la réponse, la liste des sources (titre, section, URL, date de vérification) et le coût de la question.
 
 ## Lancer l'assistant
@@ -126,9 +126,9 @@ Ces valeurs n'ont pas été ajustées pour notre corpus. On pourrait les tester 
 
 → Voir : `K1` et `B` en haut de [scripts/rechercher.py](scripts/rechercher.py)
 
-### Pourquoi 5 extraits, 300 mots, 6 lettres ?
-Ces trois chiffres sont des **choix raisonnables faits à la main au début du projet, pas des valeurs mesurées**. Voici le raisonnement :
-- **5 extraits** : c'est un compromis. Trop peu, et on risque de rater l'information. Trop, et on paie plus de tokens (5 extraits font déjà environ 3 000 à 4 000 tokens envoyés) et on noie le modèle sous des passages hors sujet. L'évaluation a montré que les doublons gaspillent ces places : les dédoublonner serait plus utile qu'en ajouter.
+### Pourquoi 8 extraits, 300 mots, 6 lettres ?
+300 mots et 6 lettres sont des **choix raisonnables faits à la main au début du projet, pas des valeurs mesurées**. Le nombre d'extraits, lui, a été mesuré. Voici le raisonnement :
+- **8 extraits** : c'est un compromis. Trop peu, et on risque de rater l'information. Trop, et on paie plus de tokens et on noie le modèle sous des passages hors sujet. Le projet a commencé avec 5, un choix fait à la main. Le passage à 8 a été **mesuré** (voir « Tester une hypothèse » à l'étape 6) : la recherche devient meilleure et plus stable, pour environ 5 600 tokens envoyés au lieu de 3 700, soit +20 % de coût (0,0012 $ par question).
 - **300 mots maximum par morceau** : la plupart des sections sont plus courtes (93 mots en médiane), donc la limite ne coupe que 24 sections sur 274. Elle évite d'envoyer un très long morceau dont seule une phrase est utile.
 - **6 lettres** : testé à la main sur « démissionne » et « démission » (les deux donnent `demiss`). Assez long pour garder le sens de la plupart des mots, assez court pour rapprocher les terminaisons. Voir ses limites plus haut.
 
@@ -144,7 +144,7 @@ Avec l'évaluation, on peut maintenant comparer d'autres valeurs (3 ou 8 extrait
 ### Deux appels à l'API
 Pour chaque question, le script appelle Claude deux fois :
 1. **Reformulation de la requête** : traduire la question en vocabulaire officiel, pour aider BM25.
-2. **Réponse ancrée** : répondre à partir des 5 meilleurs extraits numérotés, en citant [1], [2]…
+2. **Réponse ancrée** : répondre à partir des 8 meilleurs extraits numérotés, en citant [1], [2]…
 
 → Voir : [scripts/demander.py](scripts/demander.py)
 
@@ -166,7 +166,7 @@ Le paramètre `system` donne à Claude son rôle et ses règles, séparés de la
 Un modèle peut inventer une réponse plausible mais fausse : on dit qu'il « hallucine ». Le RAG réduit ce risque en ancrant la réponse dans des extraits, et les citations permettent de vérifier. Test fait : à la question « montant du RSA » (absent des documents), l'assistant répond qu'il ne trouve pas l'information au lieu d'inventer un chiffre.
 
 ### Tokens et coût
-L'API facture au **token**, un morceau de mot (environ 3/4 de mot en français). Une question envoie environ 4 000 tokens (surtout les 5 extraits) et en reçoit 1 000 à 1 500, réflexion du modèle comprise. Le coût exact dépend du modèle (voir plus bas). `response.usage` donne les chiffres exacts.
+L'API facture au **token**, un morceau de mot (environ 3/4 de mot en français). Une question envoie environ 5 600 tokens (surtout les 8 extraits) et en reçoit 1 000 à 1 500, réflexion du modèle comprise. Le coût exact dépend du modèle (voir plus bas). `response.usage` donne les chiffres exacts.
 
 ### L'effort
 `output_config={"effort": ...}` règle combien Claude réfléchit avant de répondre : `low` pour la reformulation (tâche simple), `medium` pour la réponse (réglable dans config.py). Plus d'effort donne une meilleure qualité possible, mais c'est plus lent et plus cher.
@@ -209,7 +209,7 @@ Sans mesure, on ne sait pas si une modification améliore ou dégrade l'assistan
 → Voir : [eval/questions.json](eval/questions.json), [eval/run_eval.py](eval/run_eval.py), [eval/resultats.md](eval/resultats.md)
 
 ### Ce qu'on mesure
-- **La recherche** : les informations utiles sont-elles dans les 5 extraits donnés au modèle ? Sans elles, même le meilleur modèle ne peut pas bien répondre.
+- **La recherche** : les informations utiles sont-elles dans les extraits donnés au modèle ? Sans elles, même le meilleur modèle ne peut pas bien répondre.
 - **La réponse** : contient-elle les éléments clés attendus (« 685 jours », « 15 jours »…) ?
 - **Les citations** : chaque [n] renvoie-t-il à un extrait réellement fourni ? Une citation inventée serait grave.
 - **L'honnêteté** : aux questions hors sujet (retraite, APL), répond-il « je ne sais pas » ?
@@ -227,7 +227,7 @@ Le modèle ne répond pas exactement pareil à chaque fois : la reformulation, d
 Haiku et Sonnet obtiennent la même qualité sur ce jeu de questions, mais Haiku coûte 13 fois moins cher (≈ 0,0009 $ contre 0,012 $ par question). Les erreurs restantes viennent de la recherche, pas du modèle : un modèle plus cher n'y changerait rien.
 
 ### Les doublons, et leur correction
-63 % des morceaux ont un texte identique à un autre, car les fiches répètent le même texte pour chaque tranche d'âge et pour le privé comme le public. Ils occupaient plusieurs des 5 places d'extraits.
+63 % des morceaux ont un texte identique à un autre, car les fiches répètent le même texte pour chaque tranche d'âge et pour le privé comme le public. Ils occupaient plusieurs des 5 places d'extraits (8 aujourd'hui).
 
 **Correction (18/11/2026) : fusionner plutôt que supprimer.** La recherche ne garde qu'un exemplaire de chaque texte, mais l'extrait retenu liste toutes les sections où il apparaît. Supprimer simplement les copies aurait été dangereux : le modèle aurait cru qu'une règle ne vaut que pour « moins de 55 ans » alors qu'elle vaut pour tous les âges.
 
@@ -242,6 +242,25 @@ Pour savoir si une modification aide, il faut mesurer avant et après avec **le 
 L'inverse des faux négatifs : le contrôle compte « trouvé » un élément qui ne devrait pas l'être. Deux cas rencontrés :
 - un mot court trouvé à l'intérieur d'un autre (« are » dans « déclarer »), corrigé en cherchant des mots entiers ;
 - un élément cité dans une phrase négative (« les extraits ne parlent pas de l'allocation chômage »). Ce cas reste une limite du contrôle automatique : d'où l'importance de lire les réponses.
+
+### Tester une hypothèse, et accepter qu'elle soit fausse
+Hypothèse du 18/11 : « la reformulation est trop longue (11 mots-clés), elle dilue la recherche ». Test du 19/11 : limiter à 5 mots-clés. Résultat : aucune amélioration (34,7/39 contre 35,3/39). **Le changement a été abandonné**, comme prévu : on ne garde que ce qui améliore la mesure.
+
+L'analyse des scores BM25 (gratuite) a ensuite montré la vraie cause pour la question sur le montant : le bon passage est écrit avec des **sigles** (« ARE », « SJR ») et sans le mot « calcul ». Une autre fiche, qui contient « est calculé d'après la formule », passait donc devant. Le bon passage arrivait 8e, juste hors des 5 extraits.
+
+### Répéter les mesures
+La reformulation varie d'un appel à l'autre, donc les extraits aussi. Une seule mesure peut tromper : avec 5 extraits, trois passages ont donné 34, 37 puis 35 éléments sur 39. On mesure donc **3 fois avant et 3 fois après**, et on compare les moyennes et la stabilité :
+
+| Réglage | 3 passages | Moyenne |
+|---|---|---|
+| 5 extraits | 34 / 37 / 35 | 35,3/39 |
+| 5 extraits + reformulation courte | 34 / 35 / 35 | 34,7/39 |
+| **8 extraits (retenu)** | 37 / 37 / 37 | **37,0/39** |
+
+Avec 8 extraits, le résultat est meilleur et ne varie plus. Les réponses passent de 35 à 36 éléments clés sur 39.
+
+### Ce qui reste hors de portée des mots-clés
+Deux questions échouent dans tous les essais : q06 (« aurai-je droit au chômage après une rupture conventionnelle ? ») et q08 (« qui verse l'allocation d'un fonctionnaire ? »). Le bon passage existe, mais avec d'autres mots que la question. C'est la limite naturelle de BM25. La piste suivante serait une recherche « par le sens » (embeddings), à n'envisager que si de nouvelles questions montrent le même problème.
 
 ## Outils et environnement
 

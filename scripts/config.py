@@ -49,12 +49,14 @@ EFFORT_REPONSE = _reglage("EFFORT_REPONSE", "medium")
 MAX_TOKENS_REFORMULATION = _reglage("MAX_TOKENS_REFORMULATION", 1000, int)
 MAX_TOKENS_REPONSE = _reglage("MAX_TOKENS_REPONSE", 2500, int)
 LONGUEUR_MAX_QUESTION = _reglage("LONGUEUR_MAX_QUESTION", 500, int)  # caractères
-NB_EXTRAITS = _reglage("NB_EXTRAITS", 5, int)
+# 8 plutôt que 5 : mesuré le 19/11/2026 (éléments clés dans les extraits 37/39
+# stable sur 3 passages, contre 35,3/39 en moyenne avec 5), pour +20 % de coût.
+NB_EXTRAITS = _reglage("NB_EXTRAITS", 8, int)
 
 # --- Prix en dollars par million de tokens : (entrée, sortie) -----------------
 # Source : platform.claude.com/docs/en/about-claude/pricing (vérifié le 2026-11-17).
 # Haiku 5.5 : tarif valable jusqu'à 100 000 tokens par requête (nos requêtes en
-# font environ 4 000) ; au-delà il passe à 0,50 / 2,50.
+# font environ 6 000) ; au-delà il passe à 0,50 / 2,50.
 PRIX = {
     "claude-haiku-5-5": (0.10, 0.50),
     "claude-sonnet-5-5": (2.00, 10.00),
