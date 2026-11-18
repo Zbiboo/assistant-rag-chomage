@@ -28,9 +28,11 @@ Python 3.15, venv .venv/ (paquets : anthropic, python-docx). Documents Markdown 
 - Échecs restants : q02 (montant), q06 (rupture conventionnelle et chômage), q08 en partie. Ils viennent de la recherche, pas du modèle.
 - 19/11 : l'hypothèse « reformulation trop longue » a été testée et réfutée (5 mots-clés : 34,7/39 contre 35,3/39). Vraie cause pour q02 : vocabulaire (le passage utilise les sigles ARE/SJR, sans « calcul »), il arrivait 8e. Avec 8 extraits : 37/39 éléments dans les extraits sur 3 passages, 36/39 dans les réponses, 0,0012 $ par question. Restent q06 et q08 (limite des mots-clés). Les embeddings ne sont pas justifiés à ce stade.
 
+- 19/11, jeu étendu à 20 questions (18 sur le corpus, dont 5 écrites par l'utilisateur) : 49/53 éléments dans les extraits avec reformulation, 13/18 questions vraiment complètes après lecture (le contrôle affiche 14 : q20 est un faux positif sur une négation), 0 citation invalide, 0,0013 $ par question. 5 échecs de recherche connus (q02/q16, q06, q08, q20) : écart de vocabulaire ou passage long. Recherche hybride à envisager APRÈS la V1.
+
 ## Prochaines étapes (dans l'ordre)
 1. ~~Essai sur la reformulation~~ : fait le 19/11. 5 mots-clés n'apportent rien (abandonné). Passage à 8 extraits retenu (37/39 stable, contre 35,3/39).
-2. Ajouter au jeu d'évaluation 5 questions écrites par moi avec mes propres mots.
+2. ~~5 questions écrites par l'utilisateur~~ : faites le 19/11 (q16 à q20). 3/5 bonnes, 2 échecs de recherche (q16 montant, q20 fonctionnaire et rupture conventionnelle). L'assistant n'invente rien dans ces 2 cas.
 3. Interface web Gradio (app.py) qui réutilise la classe Assistant : sources cliquables, avertissement "ne remplace pas un conseiller France Travail" avec la date des fiches, questions d'exemple, lien vers le dépôt GitHub, protections anti-abus (longueur max déjà en place, limite de dépense dans la console Anthropic). Gradio est à installer : me demander d'abord.
 4. Mise en ligne sur Hugging Face Spaces : clé dans les Secrets du Space, morceaux recréés au démarrage ou fournis, test du lien public.
 5. Présentation : README du dépôt (démarche, architecture, résultats de l'évaluation, limites), texte de présentation pour les recruteurs.

@@ -262,6 +262,18 @@ Avec 8 extraits, le résultat est meilleur et ne varie plus. Les réponses passe
 ### Ce qui reste hors de portée des mots-clés
 Deux questions échouent dans tous les essais : q06 (« aurai-je droit au chômage après une rupture conventionnelle ? ») et q08 (« qui verse l'allocation d'un fonctionnaire ? »). Le bon passage existe, mais avec d'autres mots que la question. C'est la limite naturelle de BM25. La piste suivante serait une recherche « par le sens » (embeddings), à n'envisager que si de nouvelles questions montrent le même problème.
 
+### Des questions écrites par un vrai utilisateur
+Les 15 premières questions avaient été écrites en connaissant les fiches, donc avec leur vocabulaire. Cinq questions écrites « comme on parle » (« je me suis fait virer », « j'ai zappé de m'actualiser ») ont révélé deux échecs de recherche sur cinq. C'est le vrai test : un utilisateur ne connaît pas les mots des fiches.
+
+### Faux positif sur une négation, constaté
+Pour q20, la réponse disait « les extraits ne disent rien sur une rupture conventionnelle avec un employeur public ». Le contrôle a compté « rupture conventionnelle » comme trouvé : 3 éléments sur 3, alors que la réponse passait à côté de l'essentiel. Seule la lecture l'a montré. Un score automatique se lit toujours avec les réponses sous les yeux.
+
+### Un passage long est pénalisé
+Le passage qui répondait à q20 est une liste de toutes les situations ouvrant droit à l'ARE : 168 mots, plus du double de la moyenne. BM25 pénalise la longueur (réglage b = 0,75), et « rupture conventionnelle » n'y est qu'une ligne parmi d'autres : le passage n'arrivait que 20e. Pistes possibles : découper les longues listes, ou une recherche par le sens.
+
+### Bilan de la recherche, et la suite
+Sur 18 questions du corpus, 5 échecs de recherche, tous dus à un écart de vocabulaire ou à un passage long. Dans ces 5 cas, l'assistant n'invente rien : il dit ce qui lui manque. Pour la V1, on garde BM25 et on documente la limite. Après la V1, la piste la plus prometteuse est une **recherche hybride** (BM25 + embeddings), à juger avec ce même jeu de 20 questions.
+
 ## Outils et environnement
 
 ### Environnement virtuel (venv) et pip

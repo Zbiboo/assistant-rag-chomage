@@ -2,92 +2,271 @@
   {
     "id": "q01",
     "question": "Combien de temps faut-il avoir travaillé pour avoir droit au chômage ?",
-    "fichiers_attendus": ["01-conditions-are.md", "08-chomage-agents-publics.md"],
-    "elements_cles": [["6 mois"], ["130 jours"], ["910 heures"], ["24 derniers mois", "24 mois"]],
+    "fichiers_attendus": [
+      "01-conditions-are.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "6 mois"
+      ],
+      [
+        "130 jours"
+      ],
+      [
+        "910 heures"
+      ],
+      [
+        "24 derniers mois",
+        "24 mois"
+      ]
+    ],
     "source_elements": "01 : « au moins 6 mois (soit 130 jours ou 910 heures) dans les 24 derniers mois » (moins de 55 ans)"
   },
   {
     "id": "q02",
     "question": "Comment est calculé le montant de mon allocation chômage ?",
-    "fichiers_attendus": ["02-montant-are.md", "08-chomage-agents-publics.md"],
-    "elements_cles": [["13,18"], ["40,4"], ["57"], ["70"], ["salaire journalier de reference", "sjr"]],
+    "fichiers_attendus": [
+      "02-montant-are.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "13,18"
+      ],
+      [
+        "40,4"
+      ],
+      [
+        "57"
+      ],
+      [
+        "70"
+      ],
+      [
+        "salaire journalier de reference",
+        "sjr"
+      ]
+    ],
     "source_elements": "02 : « partie fixe égale à 13,18 € et partie variable égale à 40,4 % du SJR… ne peut pas être inférieure à 57 % ni supérieure à 70 % du SJR »"
   },
   {
     "id": "q03",
     "question": "J'ai 56 ans et mon contrat s'est terminé en mai 2025. Combien de temps serai-je indemnisé ?",
-    "fichiers_attendus": ["03-duree-indemnisation.md", "08-chomage-agents-publics.md"],
-    "elements_cles": [["685"]],
+    "fichiers_attendus": [
+      "03-duree-indemnisation.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "685"
+      ]
+    ],
     "source_elements": "03 (55 ou 56 ans, fin de contrat depuis le 1er février 2023) : « la durée maximale de versement … sera de 685 jours calendaires »"
   },
   {
     "id": "q04",
     "question": "Je viens de perdre mon emploi : comment et dans quel délai dois-je m'inscrire à France Travail ?",
-    "fichiers_attendus": ["04-inscription-france-travail.md"],
-    "elements_cles": [["12 mois"], ["en ligne", "francetravail.fr"], ["agence"]],
+    "fichiers_attendus": [
+      "04-inscription-france-travail.md"
+    ],
+    "elements_cles": [
+      [
+        "12 mois"
+      ],
+      [
+        "en ligne",
+        "francetravail.fr"
+      ],
+      [
+        "agence"
+      ]
+    ],
     "source_elements": "04 : « s'inscrire au plus tard dans les 12 mois qui suivent la fin de votre contrat » ; « en ligne sur le site de France Travail ou sur place dans une agence »"
   },
   {
     "id": "q05",
     "question": "Puis-je toucher le chômage si je démissionne pour me reconvertir ?",
-    "fichiers_attendus": ["05-demission-reconversion.md"],
-    "elements_cles": [["cdi"], ["1300 jours"], ["60 derniers mois", "5 ans"], ["reel et serieux"]],
+    "fichiers_attendus": [
+      "05-demission-reconversion.md"
+    ],
+    "elements_cles": [
+      [
+        "cdi"
+      ],
+      [
+        "1300 jours"
+      ],
+      [
+        "60 derniers mois",
+        "5 ans"
+      ],
+      [
+        "reel et serieux"
+      ]
+    ],
     "source_elements": "05 : « salarié en CDI de droit privé… au moins 1 300 jours travaillés dans les 60 derniers mois (soit 5 ans)… projet reconnu comme étant réel et sérieux »"
   },
   {
     "id": "q06",
     "question": "Si je signe une rupture conventionnelle, aurai-je droit au chômage, et puis-je encore changer d'avis après la signature ?",
-    "fichiers_attendus": ["06-rupture-conventionnelle.md"],
-    "elements_cles": [["are", "allocation d'aide au retour a l'emploi"], ["15 jours"]],
+    "fichiers_attendus": [
+      "06-rupture-conventionnelle.md"
+    ],
+    "elements_cles": [
+      [
+        "are",
+        "allocation d'aide au retour a l'emploi"
+      ],
+      [
+        "15 jours"
+      ]
+    ],
     "source_elements": "06 : « peut bénéficier de l'allocation d'aide au retour à l'emploi (ARE) » ; « droit de rétractation… de 15 jours calendaires »"
   },
   {
     "id": "q07",
     "question": "Je vais suivre une formation validée par France Travail. Est-ce que je continue à toucher une allocation ?",
-    "fichiers_attendus": ["07-formation-aref.md", "02-montant-are.md"],
-    "elements_cles": [["aref"], ["40 heures"], ["22,99"]],
+    "fichiers_attendus": [
+      "07-formation-aref.md",
+      "02-montant-are.md"
+    ],
+    "elements_cles": [
+      [
+        "aref"
+      ],
+      [
+        "40 heures"
+      ],
+      [
+        "22,99"
+      ]
+    ],
     "source_elements": "07 : Aref si « formation d'une durée d'au moins 40 heures » ; « le montant net de l'Aref ne peut pas être inférieur à 22,99 € par jour »"
   },
   {
     "id": "q08",
     "question": "Je suis fonctionnaire et j'ai été licencié : qui me verse l'allocation chômage ?",
-    "fichiers_attendus": ["08-chomage-agents-publics.md"],
-    "elements_cles": [["convention de gestion"], ["administration", "ancien employeur"], ["ressources humaines", "drh"]],
+    "fichiers_attendus": [
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "convention de gestion"
+      ],
+      [
+        "administration",
+        "ancien employeur"
+      ],
+      [
+        "ressources humaines",
+        "drh"
+      ]
+    ],
     "source_elements": "08 : « Pour savoir si une convention de gestion a été conclue entre votre administration et France Travail, renseignez-vous auprès de la direction des ressources humaines de votre ancien employeur »"
   },
   {
     "id": "q09",
     "question": "Si je reprends un travail à temps partiel, est-ce que je garde une partie de mon allocation chômage ?",
-    "fichiers_attendus": ["09-cumul-reprise-emploi.md", "08-chomage-agents-publics.md"],
-    "elements_cles": [["70"], ["salaire journalier de reference", "sjr"]],
+    "fichiers_attendus": [
+      "09-cumul-reprise-emploi.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "70"
+      ],
+      [
+        "salaire journalier de reference",
+        "sjr"
+      ]
+    ],
     "source_elements": "09 : « (montant de l'ARE mensuelle - 70% du salaire de votre nouvelle activité) / montant de l'ARE journalière » ; « le cumul… ne doit pas dépasser votre SJR »"
   },
   {
     "id": "q10",
     "question": "Quand dois-je faire mon actualisation pour le mois de novembre 2026 ?",
-    "fichiers_attendus": ["10-actualisation-obligations.md"],
-    "elements_cles": [["28 novembre"], ["15 decembre"]],
+    "fichiers_attendus": [
+      "10-actualisation-obligations.md"
+    ],
+    "elements_cles": [
+      [
+        "28 novembre"
+      ],
+      [
+        "15 decembre"
+      ]
+    ],
     "source_elements": "10 (calendrier 2026) : « Novembre 2026 | 28 novembre 2026 | 2 décembre 2026 | 15 décembre 2026 »"
   },
   {
     "id": "q11",
     "question": "Je ne suis pas d'accord avec une décision de France Travail, que puis-je faire ?",
-    "fichiers_attendus": ["11-contester-decision.md", "13-radiation-france-travail.md", "14-suppression-allocations.md"],
-    "elements_cles": [["reclamation"], ["mediateur"], ["juge administratif", "tribunal administratif"]],
+    "fichiers_attendus": [
+      "11-contester-decision.md",
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md"
+    ],
+    "elements_cles": [
+      [
+        "reclamation"
+      ],
+      [
+        "mediateur"
+      ],
+      [
+        "juge administratif",
+        "tribunal administratif"
+      ]
+    ],
     "source_elements": "11 : « adresser une réclamation auprès de votre agence… saisir le médiateur régional… saisir le juge administratif »"
   },
   {
     "id": "q12",
     "question": "Suis-je obligé d'accepter n'importe quelle offre d'emploi ?",
-    "fichiers_attendus": ["12-contrat-engagement-obligations.md", "13-radiation-france-travail.md"],
-    "elements_cles": [["offre raisonnable"], ["competences", "qualifications"], ["situation personnelle", "familiale"], ["marche du travail"]],
+    "fichiers_attendus": [
+      "12-contrat-engagement-obligations.md",
+      "13-radiation-france-travail.md"
+    ],
+    "elements_cles": [
+      [
+        "offre raisonnable"
+      ],
+      [
+        "competences",
+        "qualifications"
+      ],
+      [
+        "situation personnelle",
+        "familiale"
+      ],
+      [
+        "marche du travail"
+      ]
+    ],
     "source_elements": "12 : « accepter une offre dite raisonnable d'emploi… critères : formation, qualifications, compétences… situation personnelle et familiale… marché du travail local… »"
   },
   {
     "id": "q13",
     "question": "Qu'est-ce que je risque si je ne vais pas à un rendez-vous France Travail sans raison valable ?",
-    "fichiers_attendus": ["13-radiation-france-travail.md", "14-suppression-allocations.md"],
-    "elements_cles": [["radiation", "radie", "radiee", "radier"], ["30 %"], ["2 mois"]],
+    "fichiers_attendus": [
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md"
+    ],
+    "elements_cles": [
+      [
+        "radiation",
+        "radie",
+        "radiee",
+        "radier"
+      ],
+      [
+        "30 %"
+      ],
+      [
+        "2 mois"
+      ]
+    ],
     "source_elements": "14 (depuis le 1er juin 2025) : motif de radiation « Absence à un rendez-vous… » ; « suspension… d'au moins 30 % pendant une durée d'un à 2 mois »"
   },
   {
@@ -105,5 +284,118 @@
     "hors_corpus": true,
     "elements_cles": [],
     "source_elements": "Aucune fiche du corpus ne traite des APL : réponse attendue « je ne sais pas »."
+  },
+  {
+    "id": "q16",
+    "auteur": "utilisateur",
+    "question": "je me suis fait virer la semaine dernière apres 2 ans dans ma boite, je touche combien de chomage a peu pres ?",
+    "fichiers_attendus": [
+      "02-montant-are.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "13,18"
+      ],
+      [
+        "40,4"
+      ],
+      [
+        "salaire journalier de reference",
+        "sjr"
+      ]
+    ],
+    "source_elements": "02 : « partie fixe égale à 13,18 € et partie variable égale à 40,4 % du salaire journalier de référence (SJR) ». Le montant exact dépend du salaire : une bonne réponse donne la formule sans inventer de chiffre."
+  },
+  {
+    "id": "q17",
+    "auteur": "utilisateur",
+    "question": "Mon patron veut que je parte mais moi je veux pas démissionner sinon j'ai rien, il y a une autre solution ?",
+    "fichiers_attendus": [
+      "06-rupture-conventionnelle.md",
+      "01-conditions-are.md",
+      "05-demission-reconversion.md"
+    ],
+    "elements_cles": [
+      [
+        "rupture conventionnelle"
+      ],
+      [
+        "commun accord"
+      ],
+      [
+        "are",
+        "allocation d'aide au retour a l'emploi"
+      ]
+    ],
+    "source_elements": "06 : « L'employeur et le salarié conviennent d'un commun accord… ne peut pas être imposée » ; « peut bénéficier de l'allocation d'aide au retour à l'emploi (ARE) ». 01 : la rupture conventionnelle fait partie des pertes d'emploi involontaires."
+  },
+  {
+    "id": "q18",
+    "auteur": "utilisateur",
+    "question": "J'ai 57 ans, mon CDD se termine le 15 décembre, pendant combien de temps je vais être payé ?",
+    "fichiers_attendus": [
+      "03-duree-indemnisation.md",
+      "01-conditions-are.md",
+      "08-chomage-agents-publics.md"
+    ],
+    "elements_cles": [
+      [
+        "822"
+      ],
+      [
+        "36 derniers mois",
+        "36 mois"
+      ]
+    ],
+    "source_elements": "03 (57 ans ou plus, fin de contrat depuis le 1er février 2023) : « la durée maximale de versement … sera de 822 jours calendaires ». 01 : « au moins 6 mois … dans les 36 derniers mois »."
+  },
+  {
+    "id": "q19",
+    "auteur": "utilisateur",
+    "question": "J'ai complètement zappé de m'actualiser ce mois-ci, je suis radié ?? je fais quoi",
+    "fichiers_attendus": [
+      "10-actualisation-obligations.md",
+      "13-radiation-france-travail.md",
+      "14-suppression-allocations.md",
+      "04-inscription-france-travail.md"
+    ],
+    "elements_cles": [
+      [
+        "plus inscrit"
+      ],
+      [
+        "radiation",
+        "radie",
+        "radiee"
+      ],
+      [
+        "reinscrire",
+        "reinscrivez",
+        "reinscription"
+      ]
+    ],
+    "source_elements": "10 : « vous ne serez plus inscrit sur la liste des demandeurs d'emploi… vous ne percevrez plus l'ARE ». 13 : « Pas d'actualisation mensuelle » est un motif de radiation. 04 et 13 : réinscription."
+  },
+  {
+    "id": "q20",
+    "auteur": "utilisateur",
+    "question": "Je suis fonctionnaire territorial en dispo, si je fais une rupture conventionnelle avec ma mairie et que je commence une formation, j'ai le droit au chômage pendant la formation ?",
+    "fichiers_attendus": [
+      "08-chomage-agents-publics.md",
+      "07-formation-aref.md"
+    ],
+    "elements_cles": [
+      [
+        "rupture conventionnelle"
+      ],
+      [
+        "aref"
+      ],
+      [
+        "40 heures"
+      ]
+    ],
+    "source_elements": "08 : « Fonctionnaire ou contractuel en CDI ayant signé une rupture conventionnelle » peut percevoir l'ARE. 07 : Aref si on perçoit l'ARE et suit une formation d'au moins 40 heures. Les fiches ne traitent pas le cas précis de la disponibilité : une bonne réponse devrait le signaler."
   }
 ]
