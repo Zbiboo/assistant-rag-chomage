@@ -13,12 +13,13 @@ Assistant qui répond aux questions sur le chômage et France Travail en citant 
 - Toute modification de la recherche ou des consignes se juge avec l'évaluation, en comparant avant / après avec le même contrôle.
 
 ## Architecture
-Python 3.15, venv .venv/ (paquets : anthropic, python-docx). Documents Markdown (documents/, 14 fiches) → découpage (scripts/decouper.py, data/morceaux.jsonl, 308 morceaux) → BM25 maison (scripts/rechercher.py) sur la question d'origine + la reformulation → 8 extraits dédoublonnés (les copies identiques sont fusionnées, avec la liste des sections où le texte apparaît) → réponse sourcée [n] (scripts/demander.py, classe Assistant, sans affichage, réutilisable par l'évaluation et l'interface). Modèle : Haiku (claude-haiku-5-5) pour les deux appels, choisi grâce à l'évaluation. Réglages (modèles, effort, max_tokens, longueur max de question, nombre d'extraits, prix) dans scripts/config.py, chacun remplaçable par une variable d'environnement du même nom.
+Python 3.15, venv .venv/ (paquets : anthropic, python-docx, gradio 6.32.0). Documents Markdown (documents/, 14 fiches) → découpage (scripts/decouper.py, data/morceaux.jsonl, 308 morceaux) → BM25 maison (scripts/rechercher.py) sur la question d'origine + la reformulation → 8 extraits dédoublonnés (les copies identiques sont fusionnées, avec la liste des sections où le texte apparaît) → réponse sourcée [n] (scripts/demander.py, classe Assistant, sans affichage, réutilisable par l'évaluation et l'interface). Modèle : Haiku (claude-haiku-5-5) pour les deux appels, choisi grâce à l'évaluation. Réglages (modèles, effort, max_tokens, longueur max de question, nombre d'extraits, prix) dans scripts/config.py, chacun remplaçable par une variable d'environnement du même nom.
 
 À savoir : data/ est ignoré par Git. Il faut relancer `scripts/decouper.py` pour recréer data/morceaux.jsonl (à prévoir aussi pour l'hébergement).
 
 ## Commandes
 - Poser une question : `.venv/bin/python scripts/demander.py "ma question"`
+- Interface web en local : `.venv/bin/python app.py` puis http://127.0.0.1:7860
 - Recherche seule (gratuit) : `.venv/bin/python scripts/rechercher.py "ma requête"`
 - Évaluation : `.venv/bin/python eval/run_eval.py` (`--recherche-seule` ne coûte presque rien ; `--recalculer` renote sans refaire d'appels). La section « Analyse et recommandation » de eval/resultats.md est écrite à la main et conservée par le script.
 
@@ -33,6 +34,6 @@ Python 3.15, venv .venv/ (paquets : anthropic, python-docx). Documents Markdown 
 ## Prochaines étapes (dans l'ordre)
 1. ~~Essai sur la reformulation~~ : fait le 19/11. 5 mots-clés n'apportent rien (abandonné). Passage à 8 extraits retenu (37/39 stable, contre 35,3/39).
 2. ~~5 questions écrites par l'utilisateur~~ : faites le 19/11 (q16 à q20). 3/5 bonnes, 2 échecs de recherche (q16 montant, q20 fonctionnaire et rupture conventionnelle). L'assistant n'invente rien dans ces 2 cas.
-3. Interface web Gradio (app.py) qui réutilise la classe Assistant : sources cliquables, avertissement "ne remplace pas un conseiller France Travail" avec la date des fiches, questions d'exemple, lien vers le dépôt GitHub, protections anti-abus (longueur max déjà en place, limite de dépense dans la console Anthropic). Gradio est à installer : me demander d'abord.
+3. ~~Interface web Gradio~~ : faite le 19/11 (app.py, réutilise Assistant ; plafond global QUESTIONS_MAX_PAR_JOUR=100 en mémoire avec verrou ; erreurs API polies ; morceaux recréés au démarrage si data/ absent ; aucune clé dans la page, la config ou les journaux, testé).
 4. Mise en ligne sur Hugging Face Spaces : clé dans les Secrets du Space, morceaux recréés au démarrage ou fournis, test du lien public.
 5. Présentation : README du dépôt (démarche, architecture, résultats de l'évaluation, limites), texte de présentation pour les recruteurs.

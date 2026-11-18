@@ -128,8 +128,16 @@ class Assistant:
             config.EFFORT_REPONSE, config.MAX_TOKENS_REPONSE,
         )
 
-    def repondre(self, question):
-        """Pose une question. Renvoie un dict avec la réponse, les extraits et les coûts."""
+    def repondre_par_etapes(self, question):
+        """Pose une question en annonçant chaque étape au fur et à mesure.
+
+        C'est un GÉNÉRATEUR : au lieu de tout renvoyer à la fin (return), il
+        « produit » (yield) plusieurs valeurs successives :
+            ("reformulation", None), ("recherche", None), ("redaction", None),
+            puis ("fini", résultat).
+        L'interface web s'en sert pour afficher l'étape en cours ; le moteur,
+        lui, ne sait rien de l'affichage.
+        """
         question = question.strip()
         if len(question) > config.LONGUEUR_MAX_QUESTION:
             raise QuestionTropLongue(
@@ -137,10 +145,13 @@ class Assistant:
                 f"(maximum : {config.LONGUEUR_MAX_QUESTION})."
             )
 
+        yield "reformulation", None
         reformulation = self.reformuler(question)                  # 1. Reformuler
+        yield "recherche", None
         extraits = self.chercher(question, reformulation["texte"])  # 2. Chercher
         appels = [reformulation]
         if extraits:                                                 # 3. Répondre
+            yield "redaction", None
             generation = self.generer(question, extraits)
             appels.append(generation)
             texte = generation["texte"]
@@ -148,7 +159,7 @@ class Assistant:
             texte = "Je n'ai trouvé aucun passage sur ce sujet dans les fiches officielles."
 
         couts = [a["cout"] for a in appels]
-        return {
+        yield "fini", {
             "question": question,
             "mots_cles": reformulation["texte"],
             "reponse": texte,
@@ -156,6 +167,12 @@ class Assistant:
             "appels": appels,
             "cout_total": None if None in couts else sum(couts),
         }
+
+    def repondre(self, question):
+        """Pose une question. Renvoie directement le résultat final (sans les étapes)."""
+        for etape, resultat in self.repondre_par_etapes(question):
+            if etape == "fini":
+                return resultat
 
 
 def section_de(morceau):

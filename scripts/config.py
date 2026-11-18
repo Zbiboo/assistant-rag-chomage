@@ -53,6 +53,12 @@ LONGUEUR_MAX_QUESTION = _reglage("LONGUEUR_MAX_QUESTION", 500, int)  # caractèr
 # stable sur 3 passages, contre 35,3/39 en moyenne avec 5), pour +20 % de coût.
 NB_EXTRAITS = _reglage("NB_EXTRAITS", 8, int)
 
+# --- Interface web (app.py) ---------------------------------------------------
+# Plafond GLOBAL (tous visiteurs confondus) de questions par jour : protège le
+# budget si quelqu'un mitraille le site. 100 questions ≈ 0,13 $ avec Haiku.
+QUESTIONS_MAX_PAR_JOUR = _reglage("QUESTIONS_MAX_PAR_JOUR", 100, int)
+URL_GITHUB = _reglage("URL_GITHUB", "https://github.com/Zbiboo/assistant-rag-chomage")
+
 # --- Prix en dollars par million de tokens : (entrée, sortie) -----------------
 # Source : platform.claude.com/docs/en/about-claude/pricing (vérifié le 2026-11-17).
 # Haiku 5.5 : tarif valable jusqu'à 100 000 tokens par requête (nos requêtes en

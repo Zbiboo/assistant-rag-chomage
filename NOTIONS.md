@@ -13,8 +13,8 @@ Ce guide explique, étape par étape, comment est construit l'assistant qui rép
 | 4. Publier le code | Dépôt Git sécurisé (clé jamais versionnée), puis GitHub | Terminé |
 | 5. Réduire les coûts | Modèles moins chers configurables, limites de taille, coût affiché | Terminé |
 | 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | Terminé |
-| 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | Prochaine étape |
-| 8. Mettre en ligne | Hébergement sur Hugging Face Spaces, testable par un lien | À faire |
+| 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | Terminé |
+| 8. Mettre en ligne | Hébergement sur Hugging Face Spaces, testable par un lien | Prochaine étape |
 | 9. Présenter | README du dépôt, texte de présentation | À faire |
 
 Objectif : une V1 en ligne avant le samedi 28 novembre 2026, pour quelques euros d'API au maximum.
@@ -37,13 +37,14 @@ Toutes les commandes se tapent dans le terminal, depuis le dossier du projet.
 ```
 .venv/bin/python scripts/demander.py "J'ai 56 ans, combien de temps serai-je indemnisé ?"
 .venv/bin/python scripts/demander.py
+.venv/bin/python app.py
 .venv/bin/python scripts/rechercher.py "contester une radiation"
 .venv/bin/python scripts/collecter_documents.py
 .venv/bin/python scripts/decouper.py
 .venv/bin/python scripts/generer_guide.py
 ```
 
-Dans l'ordre : poser une question ; mode interactif (plusieurs questions, Entrée pour quitter) ; tester la recherche seule, sans IA ni coût ; re-télécharger les fiches ; refaire le découpage ; régénérer ce guide au format Word.
+Dans l'ordre : poser une question ; mode interactif (plusieurs questions, Entrée pour quitter) ; lancer la page web (puis ouvrir http://127.0.0.1:7860 dans le navigateur) ; tester la recherche seule, sans IA ni coût ; re-télécharger les fiches ; refaire le découpage ; régénérer ce guide au format Word.
 
 ## Étape 0 : collecter les documents
 
@@ -273,6 +274,60 @@ Le passage qui répondait à q20 est une liste de toutes les situations ouvrant 
 
 ### Bilan de la recherche, et la suite
 Sur 18 questions du corpus, 5 échecs de recherche, tous dus à un écart de vocabulaire ou à un passage long. Dans ces 5 cas, l'assistant n'invente rien : il dit ce qui lui manque. Pour la V1, on garde BM25 et on documente la limite. Après la V1, la piste la plus prometteuse est une **recherche hybride** (BM25 + embeddings), à juger avec ce même jeu de 20 questions.
+
+## Étape 7 : l'interface web
+
+### Gradio
+**Gradio** est une bibliothèque Python qui fabrique une page web à partir de quelques lignes de code : champs, boutons, zones de texte. Pas besoin d'écrire de HTML ni de JavaScript. Hugging Face Spaces, l'hébergeur prévu, sait la faire tourner directement.
+- `gr.Blocks()` : la page, dans laquelle on empile les éléments dans l'ordre d'affichage.
+- `gr.Textbox`, `gr.Button`, `gr.Markdown` : un champ de saisie, un bouton, un texte mis en forme.
+- `gr.Examples` : des questions d'exemple ; un clic remplit le champ.
+- `bouton.click(fonction, inputs=…, outputs=…)` : un **événement**. Quand on clique, Gradio appelle la fonction Python avec le contenu du champ et affiche ce qu'elle renvoie.
+
+→ Voir : [app.py](app.py)
+
+### Réutiliser le moteur, sans dupliquer
+`app.py` ne contient que l'interface. Il appelle `Assistant.repondre()`, exactement comme la ligne de commande et l'évaluation. Une amélioration du moteur profite donc partout, et l'évaluation mesure bien ce que voient les visiteurs.
+
+### Serveur et navigateur : où est la clé ?
+Le code Python tourne sur le **serveur**. Le navigateur du visiteur ne reçoit que la page et les réponses, jamais la clé, qui reste dans une variable d'environnement du serveur. Test fait : la page, la configuration envoyée au navigateur et le journal du serveur ont été fouillés, et aucune clé n'y figure.
+
+### Protections contre les abus
+- **Longueur maximale** : 500 caractères, vérifiée avant tout appel payant (et bloquée dès la saisie dans le champ).
+- **Plafond global par jour** : 100 questions par jour **pour tous les visiteurs ensemble** (réglage `QUESTIONS_MAX_PAR_JOUR`), soit au pire environ 0,13 $ par jour. Au-delà, un message clair invite à revenir le lendemain. Le compteur est en mémoire : il repart de zéro à minuit et à chaque redémarrage du serveur. C'est suffisant pour une démonstration.
+- **Verrou (`threading.Lock`)** : deux visiteurs peuvent poser une question au même moment. Le verrou garantit qu'ils ne modifient pas le compteur en même temps, ce qui pourrait fausser le compte.
+- **Erreurs de l'API** : un problème chez Anthropic (clé refusée, service saturé…) affiche un message poli au visiteur. Le journal du serveur ne note que le type d'erreur (par exemple `AuthenticationError 401`), sans détail sensible. La place réservée dans le compteur est rendue.
+- **Limite de dépense** de 10 $ par mois dans la console Anthropic, sans recharge automatique : le filet de sécurité final.
+
+→ Voir : `CompteurJournalier` et `repondre` dans [app.py](app.py)
+
+### Comment la réponse arrive dans le navigateur
+Quand on clique sur « Poser la question », le navigateur envoie la question (`queue/join`), puis **garde une connexion ouverte** (`queue/data`) sur laquelle le serveur envoie des nouvelles : « traitement commencé », la progression, et enfin la réponse. Cette technique s'appelle **SSE** (Server-Sent Events, « événements envoyés par le serveur »).
+
+**Piège rencontré :** si l'on quitte la page pendant l'attente (lien du bas de page, « Run history », retour en arrière), le navigateur ferme cette connexion. Le serveur termine quand même son travail, donc l'appel à Claude est payé, mais la réponse est perdue. Gradio affiche alors « Connection errored out ».
+
+**Comment on l'a trouvé :** en lançant le serveur avec un **journal des requêtes**, qui note chaque échange avec le navigateur. Il montrait que Safari coupait la connexion au bout de 5,4 secondes, au moment même où il ouvrait la page « Run history ». Le serveur, lui, n'avait aucune erreur. Leçon : quand « ça ne marche pas », il faut d'abord savoir **qui** coupe, le navigateur ou le serveur, avant de toucher au code.
+
+### Afficher l'étape en cours (générateur)
+Une réponse prend environ 10 secondes. Sans signe d'activité, on croit que c'est bloqué et on clique ailleurs. La zone de réponse affiche donc l'étape en cours (« ⏳ Étape 1 sur 3 · Je reformule votre question… », puis 2 et 3), remplacée ensuite par la réponse.
+
+**Premier essai raté :** la barre de progression intégrée à Gradio (`gr.Progress()`) envoyait bien ses messages, mais elle restait invisible. Elle se superpose aux zones de résultat, or nos blocs de texte étaient vides, sans cadre et sans hauteur : la barre n'avait pas de place pour s'afficher. Plutôt que de retoucher une mise en page que je ne pouvais pas voir, on a choisi une solution visible à coup sûr : écrire l'étape directement dans la zone de réponse.
+
+**L'outil : le générateur.** Une fonction normale renvoie un seul résultat (`return`). Un **générateur** en produit plusieurs, l'un après l'autre, avec `yield`. Gradio met la page à jour à chaque `yield`.
+- `Assistant.repondre_par_etapes()` produit `("reformulation", None)`, `("recherche", None)`, `("redaction", None)`, puis `("fini", résultat)`. Le moteur annonce les étapes mais ne sait rien de l'affichage.
+- `repondre()` dans `app.py` traduit chaque étape en texte affiché.
+- `Assistant.repondre()` garde son comportement habituel (le résultat final seulement) : la ligne de commande et l'évaluation ne changent pas.
+
+→ Voir : `repondre_par_etapes` dans [scripts/demander.py](scripts/demander.py), `ETAPES` et `repondre` dans [app.py](app.py)
+
+### Raccourcis de rechargement
+Dans Safari, **Cmd+R** recharge la page et **Cmd+Option+R** la recharge sans le cache. Attention : **Cmd+Maj+R**, qui sert à recharger dans Chrome et Firefox, ouvre le mode Lecteur dans Safari.
+
+### La date des informations
+La page affiche que les fiches ont été consultées le 17/11/2026, et chaque source donne sa date de vérification par service-public. Sur un sujet où les règles changent, l'utilisateur doit savoir de quand datent les informations.
+
+### Compatibilité des versions de Python
+Le Mac utilise Python 3.15, mais l'hébergeur peut proposer une version plus ancienne. Le code est vérifié avec Python 3.9 (`python3 -m py_compile`) : il n'utilise aucune syntaxe trop récente.
 
 ## Outils et environnement
 

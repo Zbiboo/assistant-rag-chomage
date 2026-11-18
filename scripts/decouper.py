@@ -109,6 +109,7 @@ def main():
                     "titre_page": meta["titre"],
                     "source": meta["source"],
                     "verifie_le": verifie.group(1) if verifie else None,
+                    "date_consultation": meta.get("date_consultation"),
                     # le 1er élément du fil est le titre de page (#) : inutile de le répéter
                     "fil": fil[1:],
                     "texte": "\n\n".join(paquet),
