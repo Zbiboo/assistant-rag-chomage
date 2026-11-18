@@ -284,6 +284,11 @@ Pourquoi c'est important : une clé publiée sur GitHub est repérée par des ro
 
 → Voir : [.gitignore](.gitignore), [.env.example](.env.example)
 
+### CLAUDE.md : la mémoire de l'assistant de code
+Claude Code ne se souvient pas des sessions précédentes. Le fichier `CLAUDE.md` à la racine est lu automatiquement au début de chaque session : il résume l'objectif, les règles de travail, l'architecture, l'état d'avancement et les prochaines étapes. C'est une « fiche de passation », à tenir à jour comme ce guide. Il se distingue de `NOTIONS.md` : ce guide explique le projet à une personne qui apprend, `CLAUDE.md` donne à l'assistant le contexte pour continuer le travail.
+
+→ Voir : [CLAUDE.md](CLAUDE.md)
+
 ### Générer ce guide en Word
 Ce guide est écrit en Markdown (`NOTIONS.md`), puis converti en fichier Word par un script qui utilise le paquet `python-docx`. Il suffit de le relancer après chaque mise à jour.
 
