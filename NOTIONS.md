@@ -398,6 +398,11 @@ Chaque choix du README s'appuie sur un chiffre de l'évaluation : la reformulati
 
 → Voir : [README.md](README.md)
 
+### Deux licences : le code et les données
+Sans licence, un code publié reste « tous droits réservés » : on peut le lire, mais pas le réutiliser. La **licence MIT**, très courte, autorise tout usage à condition de garder la mention de l'auteur. C'est le choix habituel pour un portfolio. Elle couvre seulement **notre code**. Les fiches de service-public restent sous **Licence Ouverte Etalab 2.0**, qui impose de citer la source et la date.
+
+→ Voir : [LICENSE](LICENSE), section « Données et licence » de [README.md](README.md)
+
 ## Outils et environnement
 
 ### Environnement virtuel (venv) et pip

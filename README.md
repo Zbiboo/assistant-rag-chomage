@@ -141,6 +141,7 @@ Détail complet et analyse : [eval/resultats.md](eval/resultats.md).
 
 - **Source :** fiches pratiques de [service-public.gouv.fr](https://www.service-public.gouv.fr) (Direction de l'information légale et administrative), consultées le 17/11/2026. L'URL de chaque fiche figure en tête de son fichier dans [documents/](documents/).
 - **Licence des données :** [Licence Ouverte / Open Licence Etalab 2.0](https://www.etalab.gouv.fr/licence-ouverte-open-licence/). Les textes sont repris fidèlement, sans modification de fond, avec mention de la source et de la date.
+- **Licence du code :** [MIT](LICENSE). Elle ne s'applique pas aux fiches de documents/, qui restent sous Licence Ouverte Etalab 2.0.
 - Ce projet n'est ni affilié à service-public.gouv.fr ni à France Travail.
 
 ## Installation en local
