@@ -12,12 +12,12 @@ Ce guide explique, étape par étape, comment est construit l'assistant qui rép
 | 3. Répondre | Claude reformule la question, puis répond à partir des morceaux en citant ses sources | Terminé |
 | 4. Publier le code | Dépôt Git sécurisé (clé jamais versionnée), puis GitHub | Terminé |
 | 5. Réduire les coûts | Modèles moins chers configurables, limites de taille, coût affiché | Terminé |
-| 6. Évaluer | 15 questions types : mesurer la recherche et la qualité des réponses | Terminé |
+| 6. Évaluer | 20 questions types : mesurer la recherche et la qualité des réponses | Terminé |
 | 7. Interface web | Une page Gradio avec sources cliquables et protections anti-abus | Terminé |
-| 8. Mettre en ligne | Hébergement sur Hugging Face Spaces, testable par un lien | Prochaine étape |
-| 9. Présenter | README du dépôt, texte de présentation | À faire |
+| 8. Mettre en ligne | Hébergement sur Hugging Face Spaces (ZeroGPU), testable par un lien | En attente : compte Hugging Face trop récent, possible vers le 19/12/2026 |
+| 9. Présenter | README du dépôt, texte de présentation pour les recruteurs | Terminé |
 
-Objectif : une V1 en ligne avant le samedi 28 novembre 2026, pour quelques euros d'API au maximum.
+Objectif de départ : une V1 en ligne avant le samedi 28 novembre 2026, pour quelques euros d'API au maximum. La mise en ligne est décalée vers le 19 décembre 2026 (voir l'étape 8) ; tout le reste est prêt.
 
 ## Comment ça marche
 
@@ -45,6 +45,38 @@ Toutes les commandes se tapent dans le terminal, depuis le dossier du projet.
 ```
 
 Dans l'ordre : poser une question ; mode interactif (plusieurs questions, Entrée pour quitter) ; lancer la page web (puis ouvrir http://127.0.0.1:7860 dans le navigateur) ; tester la recherche seule, sans IA ni coût ; re-télécharger les fiches ; refaire le découpage ; régénérer ce guide au format Word.
+
+## Le projet en 5 minutes (récap pour l'entretien)
+
+Cette partie résume tout le projet, pour le réviser et pouvoir le raconter. Le détail de chaque notion est dans les étapes plus bas.
+
+### L'histoire en une phrase
+J'ai construit, sans framework, un assistant qui répond aux questions sur le chômage en s'appuyant uniquement sur 14 fiches officielles. Il cite ses sources et sait dire « je ne sais pas ». Chaque choix technique a été mesuré avec une évaluation que j'ai écrite.
+
+### Les 6 grandes étapes
+1. **Collecter** : télécharger 14 fiches de service-public.gouv.fr et les convertir en Markdown, mot pour mot. Si les documents sont mauvais, l'assistant le sera aussi.
+2. **Découper** : couper les fiches en 308 morceaux. Chacun garde son « fil de titres » (« Vous avez 55 ou 56 ans > Montant brut »), sans quoi « le montant est de 57 % » ne veut rien dire.
+3. **Chercher** : BM25 codé à la main, qui note chaque morceau selon les mots en commun avec la question. Les mots rares comptent plus, les morceaux longs sont un peu pénalisés.
+4. **Répondre** : deux appels à Claude. Le premier reformule la question en vocabulaire officiel, le second répond à partir des 8 meilleurs extraits, en citant [n].
+5. **Évaluer** : 20 questions avec les éléments de réponse attendus. Chaque changement est jugé avant / après avec le même contrôle.
+6. **Montrer** : une page web Gradio protégée (clé côté serveur, plafond par jour, erreurs polies) et un README.
+
+### Les chiffres à retenir
+- 14 fiches, 308 morceaux, dont 195 doublons fusionnés.
+- Reformulation : 68 % → 92 % des éléments attendus présents dans les extraits.
+- 8 extraits au lieu de 5 : 35,3 → 37 sur 39 (mesuré 3 fois).
+- 13 questions sur 18 entièrement correctes, 0 citation inventée, 2 « je ne sais pas » sur 2 pour les questions hors sujet.
+- Haiku au lieu de Sonnet : même qualité, 13 fois moins cher. Environ 0,0013 $ et 6 secondes par question.
+
+### Les questions probables en entretien
+- **Pourquoi ne pas utiliser LangChain ?** Pour comprendre chaque brique et pouvoir l'expliquer. Le projet est petit : un framework aurait caché la logique sans rien apporter.
+- **Pourquoi pas d'embeddings ni de base vectorielle ?** 308 morceaux, c'est petit. L'évaluation montrait que les échecs venaient surtout des doublons et du vocabulaire, que le dédoublonnage et la reformulation ont corrigés en grande partie. Les embeddings sont la prochaine piste, sous forme de recherche hybride, et seront jugés avec le même jeu de questions.
+- **Comment évitez-vous les hallucinations ?** Une consigne stricte (répondre uniquement à partir des extraits, citer chaque information, dire quand on ne sait pas), le contrôle des citations par l'évaluation, et des questions hors sujet pour vérifier que l'assistant s'abstient.
+- **Comment avez-vous choisi le modèle ?** Par la mesure : Haiku et Sonnet sur les mêmes questions donnent la même qualité, à un prix 13 fois plus bas pour Haiku. Les erreurs venaient de la recherche, qu'un plus gros modèle ne corrige pas.
+- **Une idée qui n'a pas marché ?** Raccourcir la reformulation à 5 mots-clés. L'hypothèse a été testée sur 3 passages (34,7 contre 35,3 sur 39), puis rejetée. La vraie cause, trouvée en lisant le classement, était les sigles ARE et SJR.
+- **Comment protégez-vous la clé et le budget ?** La clé est dans une variable d'environnement côté serveur, jamais dans Git ni dans la page. La page a un plafond global de questions par jour, une question limitée à 500 caractères, et la console Anthropic a une limite de dépense.
+- **Les limites ?** La recherche par mots-clés rate quand le vocabulaire est très différent. Le corpus est petit et daté. L'évaluation compte 20 questions, et son contrôle par mots ne voit pas les négations.
+- **Qu'est-ce que vous feriez ensuite ?** Une recherche hybride, un jeu de questions plus grand venant de vrais utilisateurs, et une recollecte automatique des fiches.
 
 ## Étape 0 : collecter les documents
 
@@ -328,6 +360,43 @@ La page affiche que les fiches ont été consultées le 17/11/2026, et chaque so
 
 ### Compatibilité des versions de Python
 Le Mac utilise Python 3.15, mais l'hébergeur peut proposer une version plus ancienne. Le code est vérifié avec Python 3.9 (`python3 -m py_compile`) : il n'utilise aucune syntaxe trop récente.
+
+## Étape 8 : mettre en ligne (en attente)
+
+### Héberger une application
+Pour qu'un recruteur teste l'assistant par un simple lien, le code doit tourner sur un **serveur** allumé en permanence, pas sur le Mac. Un **hébergeur** fournit ce serveur. On lui envoie le code, il installe les paquets de requirements.txt, lance `app.py` et donne une adresse publique.
+
+### Hugging Face Spaces
+Un **Space** est un dépôt Git hébergé par Hugging Face, qui sait lancer une application Gradio. À chaque `git push` vers ce dépôt, le Space réinstalle et redémarre l'application. La clé API se range dans les **Secrets** du Space (Settings). Elle y est lue comme une variable d'environnement, exactement comme avec `.env` en local. Un secret ne se relit pas une fois enregistré, et il n'est pas copié quand quelqu'un duplique le Space.
+
+### L'en-tête du README : la configuration du Space
+Hugging Face lit la configuration du Space dans un bloc YAML placé tout en haut de README.md, entre deux lignes `---` (le même principe que le front matter des fiches) :
+- `sdk: gradio` et `sdk_version: 6.32.0` : Gradio, dans la même version qu'en local ;
+- `python_version: 3.12.12` : l'une des deux seules versions acceptées par ZeroGPU ;
+- `app_file: app.py` : le fichier à lancer.
+GitHub affiche ce bloc sous forme d'un petit tableau en haut du README : c'est normal.
+
+→ Voir : [README.md](README.md)
+
+### Piège : les règles des hébergeurs changent
+Le plan initial supposait un Space gratuit sur « CPU basic ». La documentation lue le 19/11/2026 dit autre chose : créer un Space Gradio demande maintenant l'abonnement PRO (9 $ par mois). Seule exception gratuite : 2 Spaces sur **ZeroGPU** (des GPU partagés), réservés aux comptes de plus de 30 jours avec un e-mail vérifié. Le compte a été créé le 19/11, d'où une mise en ligne vers le 19/12/2026. Alternatives écartées : PRO (9 $ par mois), et Render, gratuit mais qui s'endort après 15 minutes sans visite et met environ 1 minute à se réveiller.
+
+Leçon : vérifier la documentation **actuelle** avant de bâtir un plan, et non ce qu'on croit savoir.
+
+### Ce qui reste à vérifier le jour de la mise en ligne
+- **Une app sans GPU sur ZeroGPU :** la documentation ne dit pas explicitement qu'une app qui n'utilise jamais de GPU fonctionne. C'est probable, car un GPU n'est attribué qu'aux fonctions qui le demandent, mais il faudra le tester.
+- **Le dossier data/** n'est pas dans Git : `app.py` le recrée au démarrage à partir de `documents/`.
+- **Le compteur de questions** repart de zéro à chaque redémarrage du Space.
+
+## Étape 9 : présenter le projet
+
+### Le README
+Le README est la vitrine du dépôt : c'est la première chose qu'un recruteur lit sur GitHub. Il répond dans l'ordre à : à quoi ça sert, comment ça marche (schéma), pourquoi ces choix, est-ce que ça marche (chiffres de l'évaluation), est-ce que c'est sûr, quelles limites, comment l'installer. Un recruteur lit en diagonale : il faut des titres clairs, des chiffres et des limites assumées. Montrer qu'on connaît les faiblesses de son projet inspire plus confiance qu'un projet présenté comme parfait.
+
+### Justifier un choix par une mesure
+Chaque choix du README s'appuie sur un chiffre de l'évaluation : la reformulation (68 % → 92 %), les 8 extraits, Haiku plutôt que Sonnet. Les réglages pris sans mesure (k1 et b de BM25, 300 mots par morceau, troncature à 6 lettres) sont présentés comme des valeurs standard ou raisonnables, pas comme des optimums.
+
+→ Voir : [README.md](README.md)
 
 ## Outils et environnement
 
